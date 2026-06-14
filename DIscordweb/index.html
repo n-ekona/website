@@ -8,12 +8,12 @@
 <style>
 *{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --ink:#e8e4dc;
-  --ink2:#a09c94;
-  --ink3:#5a5650;
-  --rule:rgba(255,255,255,0.12);
-  --glass:rgba(10,8,6,0.58);
-  --glass2:rgba(10,8,6,0.42);
+  --ink:#f0ece4;
+  --ink2:#c8c2b8;
+  --ink3:#8a8278;
+  --rule:rgba(255,255,255,0.14);
+  --glass:rgba(8,6,4,0.62);
+  --glass2:rgba(8,6,4,0.48);
 }
 html,body{
   width:100%;min-height:100vh;
@@ -27,57 +27,46 @@ html,body{
 /* ── 背景 ── */
 .bg-layer{
   position:fixed;inset:0;z-index:0;
-  background-size:cover;
-  background-position:center;
-  opacity:0;
-  transition:opacity 1.6s ease;
-  filter:blur(6px) brightness(0.72);
+  background-size:cover;background-position:center;
+  opacity:0;transition:opacity 1.6s ease;
+  filter:blur(6px) brightness(0.70);
   transform:scale(1.04);
 }
 .bg-layer.active{opacity:1}
 .bg-overlay{
   position:fixed;inset:0;z-index:1;
-  background:linear-gradient(
-    to bottom,
-    rgba(4,3,2,0.55) 0%,
-    rgba(4,3,2,0.22) 45%,
-    rgba(4,3,2,0.62) 100%
-  );
+  background:linear-gradient(to bottom,
+    rgba(2,1,1,0.54) 0%,
+    rgba(2,1,1,0.18) 45%,
+    rgba(2,1,1,0.60) 100%);
 }
 
-/* ── カスタムカーソル ── */
+/* ── カーソル ── */
 #cursor{
-  position:fixed;
-  pointer-events:none;
-  z-index:9999;
-  width:10px;height:10px;
-  margin:-5px 0 0 -5px;
+  position:fixed;pointer-events:none;z-index:9999;
+  width:10px;height:10px;margin:-5px 0 0 -5px;
   border-radius:50%;
   background:rgba(255,255,255,0.85);
   box-shadow:0 0 6px rgba(255,255,255,0.5);
-  transition:transform .12s ease,opacity .12s;
   mix-blend-mode:difference;
 }
-body:hover #cursor{opacity:1}
 
 /* ── 花びら ── */
 .petal{
-  position:fixed;
-  pointer-events:none;
-  z-index:9998;
+  position:fixed;pointer-events:none;z-index:9998;
   border-radius:80% 0 80% 0;
   animation:petalFall linear forwards;
 }
 @keyframes petalFall{
-  0%  {transform:translate(0,0) rotate(0deg) scale(1); opacity:.9}
-  100%{transform:translate(var(--dx),var(--dy)) rotate(var(--dr)) scale(.3); opacity:0}
+  0%  {transform:translate(0,0) rotate(0deg) scale(1);opacity:.88}
+  100%{transform:translate(var(--dx),var(--dy)) rotate(var(--dr)) scale(.28);opacity:0}
 }
 
-/* ── ページ全体 ── */
+/* ── ページ ── */
 .page{
   position:relative;z-index:2;
   max-width:720px;margin:0 auto;
-  padding:0 0 72px;
+  padding:0 0 80px;
 }
 
 /* ── ヘッダー ── */
@@ -86,23 +75,20 @@ body:hover #cursor{opacity:1}
   padding:20px 36px 18px;
   border-bottom:0.5px solid var(--rule);
   background:var(--glass);
-  backdrop-filter:blur(14px);
-  -webkit-backdrop-filter:blur(14px);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
   position:sticky;top:0;z-index:10;
 }
 .brand{
   font-family:'Noto Serif JP',serif;font-weight:300;
   font-size:13px;letter-spacing:0.18em;
-  color:var(--ink2);text-decoration:none;
-  transition:color .2s;
+  color:var(--ink2);text-decoration:none;transition:color .2s;
 }
 .brand:hover{color:var(--ink)}
 .nav{display:flex;align-items:center;gap:18px}
 .nav a{
   display:inline-flex;align-items:center;gap:5px;
   font-size:11px;letter-spacing:0.1em;
-  color:var(--ink3);text-decoration:none;
-  transition:color .2s;
+  color:var(--ink2);text-decoration:none;transition:color .2s;
 }
 .nav a:hover{color:var(--ink)}
 .nav a svg{width:13px;height:13px;flex-shrink:0}
@@ -119,23 +105,20 @@ body:hover #cursor{opacity:1}
   font-size:clamp(22px,4.5vw,32px);
   letter-spacing:0.06em;line-height:1.65;
   color:var(--ink);margin-bottom:16px;
-  text-shadow:0 2px 28px rgba(0,0,0,0.7);
+  text-shadow:0 2px 20px rgba(0,0,0,0.6);
 }
 .hero-title em{font-style:normal;color:var(--ink2)}
 .hero-sub{
-  font-size:12.5px;letter-spacing:0.05em;
-  color:var(--ink2);line-height:2.1;
-  max-width:400px;
-  text-shadow:0 1px 10px rgba(0,0,0,0.85);
+  font-size:13px;letter-spacing:0.05em;
+  color:var(--ink);line-height:2.1;max-width:400px;
+  text-shadow:0 1px 12px rgba(0,0,0,0.85);
 }
 .join-btn{
   display:inline-flex;align-items:center;gap:9px;
-  margin-top:36px;
-  padding:11px 24px;
-  border:0.5px solid rgba(255,255,255,0.20);
-  background:rgba(255,255,255,0.06);
-  backdrop-filter:blur(8px);
-  -webkit-backdrop-filter:blur(8px);
+  margin-top:36px;padding:11px 24px;
+  border:0.5px solid rgba(255,255,255,0.25);
+  background:rgba(255,255,255,0.08);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
   font-size:12px;letter-spacing:0.12em;
   color:var(--ink2);text-decoration:none;
   font-family:'Noto Sans JP',sans-serif;
@@ -143,113 +126,137 @@ body:hover #cursor{opacity:1}
 }
 .join-btn:hover{
   border-color:rgba(88,101,242,0.65);
-  color:#9ba4f7;
-  background:rgba(88,101,242,0.10);
+  color:#b0b8ff;background:rgba(88,101,242,0.10);
 }
 .join-btn svg{width:14px;height:14px;fill:currentColor;flex-shrink:0}
-.join-url{
-  margin-top:9px;
-  font-size:10px;letter-spacing:0.12em;color:var(--ink3);
+.join-url{margin-top:9px;font-size:10px;letter-spacing:0.12em;color:var(--ink3)}
+
+/* ── ルーレット型 Welcome ── */
+.welcome-section{
+  margin:0 36px;
+  border:0.5px solid var(--rule);
+  background:var(--glass2);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  padding:28px 32px 26px;
+}
+.welcome-eyebrow{
+  font-size:10px;letter-spacing:0.22em;color:var(--ink3);margin-bottom:20px;
+}
+.welcome-roulette{
+  display:flex;align-items:center;gap:0;
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:clamp(14px,2.4vw,18px);
+  letter-spacing:0.06em;color:var(--ink2);
+  line-height:1;
+}
+.welcome-static{white-space:nowrap;color:var(--ink2)}
+/* スロット窓 */
+.welcome-slot{
+  display:inline-block;
+  overflow:hidden;
+  height:2.2em;
+  min-width:11em;
+  vertical-align:middle;
+  margin:0 8px;
+  position:relative;
+}
+/* 上下フェード */
+.welcome-slot::before,
+.welcome-slot::after{
+  content:'';position:absolute;left:0;right:0;z-index:2;height:25%;
+  pointer-events:none;
+}
+.welcome-slot::before{
+  top:0;
+  background:linear-gradient(to bottom, var(--glass2) 0%, transparent 100%);
+}
+.welcome-slot::after{
+  bottom:0;
+  background:linear-gradient(to top, var(--glass2) 0%, transparent 100%);
+}
+.welcome-drum{
+  display:flex;flex-direction:column;
+  /* JSで transform:translateY を操作 */
+}
+.welcome-item{
+  height:2.2em;
+  display:flex;align-items:center;justify-content:center;
+  text-align:center;
+  white-space:nowrap;
+  color:var(--ink);
+  font-family:'Noto Serif JP',serif;
+  flex-shrink:0;
 }
 
 /* ── フィーチャー ── */
 .features-wrap{
   margin:0 36px;
-  border:0.5px solid var(--rule);
+  border:0.5px solid var(--rule);border-top:none;
   background:var(--glass2);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
 .feat-row{display:grid;grid-template-columns:1fr 1fr}
 .feat{padding:24px 26px}
 .feat:first-child{border-right:0.5px solid var(--rule)}
 .feat-row+.feat-row .feat{border-top:0.5px solid var(--rule)}
 .feat-row+.feat-row .feat:first-child{border-right:0.5px solid var(--rule)}
-.feat-no{
-  font-size:10px;letter-spacing:0.12em;
-  color:var(--ink3);margin-bottom:10px;
-}
+.feat-no{font-size:10px;letter-spacing:0.12em;color:var(--ink3);margin-bottom:10px}
 .feat-name{
   font-family:'Noto Serif JP',serif;font-weight:300;
   font-size:13px;letter-spacing:0.06em;
   color:var(--ink);line-height:1.65;margin-bottom:7px;
 }
-.feat-desc{
-  font-size:11px;color:var(--ink3);
-  line-height:1.9;letter-spacing:0.04em;
-}
+.feat-desc{font-size:11.5px;color:var(--ink2);line-height:1.9;letter-spacing:0.04em}
 
 /* ── タグ / 宣伝 ── */
 .sub-row{
   display:flex;align-items:center;justify-content:space-between;
-  margin:0 36px;
-  padding:20px 26px;
-  border:0.5px solid var(--rule);
-  border-top:none;
+  margin:0 36px;padding:20px 26px;
+  border:0.5px solid var(--rule);border-top:none;
   background:var(--glass2);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
 .tag-label{font-size:10px;letter-spacing:0.2em;color:var(--ink3)}
 .tag-pill{
   font-family:'Noto Serif JP',serif;font-weight:300;
-  font-size:12px;letter-spacing:0.14em;
-  color:var(--ink2);
-  padding:4px 14px;
-  border:0.5px solid var(--rule);
+  font-size:12px;letter-spacing:0.14em;color:var(--ink2);
+  padding:4px 14px;border:0.5px solid var(--rule);
 }
-.ad-note{font-size:10px;color:var(--ink3);letter-spacing:0.06em}
+.ad-note{font-size:10px;color:var(--ink2);letter-spacing:0.06em}
 
-/* ── レビューセクション ── */
+/* ── レビュー ── */
 .review-section{
   margin:28px 36px 0;
   border:0.5px solid var(--rule);
   background:var(--glass2);
-  backdrop-filter:blur(16px);
-  -webkit-backdrop-filter:blur(16px);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
 }
-.review-header{
-  padding:18px 26px 14px;
-  border-bottom:0.5px solid var(--rule);
-}
-.review-eyebrow{
-  font-size:10px;letter-spacing:0.22em;color:var(--ink3);
-  margin-bottom:6px;
-}
+.review-header{padding:18px 26px 14px;border-bottom:0.5px solid var(--rule)}
+.review-eyebrow{font-size:10px;letter-spacing:0.22em;color:var(--ink3);margin-bottom:6px}
 .review-title{
   font-family:'Noto Serif JP',serif;font-weight:300;
-  font-size:13px;letter-spacing:0.06em;color:var(--ink);
-  line-height:1.6;
+  font-size:13px;letter-spacing:0.06em;color:var(--ink);line-height:1.6;
 }
 .review-links{display:grid;grid-template-columns:1fr 1fr}
 .review-link-item{
   display:flex;flex-direction:column;gap:5px;
-  padding:18px 26px;
-  text-decoration:none;
-  transition:background .2s;
-  border-right:0.5px solid var(--rule);
+  padding:18px 26px;text-decoration:none;
+  transition:background .2s;border-right:0.5px solid var(--rule);
 }
 .review-link-item:last-child{border-right:none}
-.review-link-item:hover{background:rgba(255,255,255,0.04)}
+.review-link-item:hover{background:rgba(255,255,255,0.05)}
 .review-site{
   font-size:10px;letter-spacing:0.14em;color:var(--ink3);
   display:flex;align-items:center;gap:5px;
 }
-.review-site svg{width:11px;height:11px;flex-shrink:0;opacity:.5}
-.review-desc{
-  font-size:12px;letter-spacing:0.04em;color:var(--ink2);
-  line-height:1.55;
-}
-.review-action{
-  font-size:10px;letter-spacing:0.1em;
-  color:var(--ink3);margin-top:2px;
-}
+.review-site svg{width:11px;height:11px;flex-shrink:0;opacity:.6}
+.review-desc{font-size:12px;letter-spacing:0.04em;color:var(--ink2);line-height:1.55}
+.review-action{font-size:10px;letter-spacing:0.1em;color:var(--ink3);margin-top:2px}
 
 /* ── フッター ── */
 .foot{
   display:flex;align-items:center;justify-content:space-between;
-  margin:28px 36px 0;
-  padding-top:22px;
+  margin:28px 36px 0;padding-top:22px;
   border-top:0.5px solid var(--rule);
 }
 .foot-left{
@@ -259,8 +266,7 @@ body:hover #cursor{opacity:1}
 .foot-links{display:flex;gap:20px}
 .foot-link{
   font-size:10px;letter-spacing:0.1em;
-  color:var(--ink3);text-decoration:none;
-  transition:color .2s;
+  color:var(--ink3);text-decoration:none;transition:color .2s;
 }
 .foot-link:hover{color:var(--ink)}
 
@@ -272,14 +278,10 @@ body:hover #cursor{opacity:1}
 .bg-dot{
   width:5px;height:5px;border-radius:50%;
   background:rgba(255,255,255,0.18);
-  border:0.5px solid rgba(255,255,255,0.22);
-  cursor:none;
-  transition:background .3s,transform .2s;
+  border:0.5px solid rgba(255,255,255,0.28);
+  cursor:none;transition:background .3s,transform .2s;
 }
-.bg-dot.active{
-  background:rgba(255,255,255,0.72);
-  transform:scale(1.2);
-}
+.bg-dot.active{background:rgba(255,255,255,0.80);transform:scale(1.2)}
 </style>
 </head>
 <body>
@@ -291,40 +293,37 @@ body:hover #cursor{opacity:1}
 <div class="bg-overlay"></div>
 
 <div class="bg-dots">
-  <div class="bg-dot active" data-i="0" onclick="jumpTo(0)"></div>
-  <div class="bg-dot"        data-i="1" onclick="jumpTo(1)"></div>
-  <div class="bg-dot"        data-i="2" onclick="jumpTo(2)"></div>
-  <div class="bg-dot"        data-i="3" onclick="jumpTo(3)"></div>
+  <div class="bg-dot active" onclick="jumpTo(0)"></div>
+  <div class="bg-dot"        onclick="jumpTo(1)"></div>
+  <div class="bg-dot"        onclick="jumpTo(2)"></div>
+  <div class="bg-dot"        onclick="jumpTo(3)"></div>
 </div>
 
 <div class="page">
 
+  <!-- ヘッダー -->
   <header class="topbar">
     <a class="brand" href="https://nekona.jp/" target="_blank">nekoNA</a>
     <nav class="nav">
       <a href="https://nekona.jp/" target="_blank">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
           <path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/>
-        </svg>
-        Home
+        </svg>Home
       </a>
       <div class="vr"></div>
       <a href="https://www.youtube.com/@n_ekona" target="_blank">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
         YouTube
       </a>
       <div class="vr"></div>
       <a href="https://x.com/n_ekona" target="_blank">
-        <svg viewBox="0 0 24 24" fill="currentColor">
-          <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/>
-        </svg>
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
         X
       </a>
     </nav>
   </header>
 
+  <!-- ヒーロー -->
   <section class="hero">
     <p class="hero-eyebrow">NEKONA CIRCLE β — 作業中毒</p>
     <h1 class="hero-title">
@@ -337,14 +336,25 @@ body:hover #cursor{opacity:1}
       宣伝目的でも、ふらっと来るだけでも。
     </p>
     <a class="join-btn" href="https://discord.gg/DtBGGNVRYz" target="_blank">
-      <svg viewBox="0 0 24 24">
-        <path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.103.132 18.117a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/>
-      </svg>
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.103.132 18.117a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
       Discord で参加する
     </a>
     <div class="join-url">discord.gg/DtBGGNVRYz</div>
   </section>
 
+  <!-- ルーレット Welcome -->
+  <div class="welcome-section">
+    <div class="welcome-eyebrow">WELCOME</div>
+    <div class="welcome-roulette">
+      <span class="welcome-static">この鯖では&nbsp;</span>
+      <span class="welcome-slot" id="welcomeSlot">
+        <div class="welcome-drum" id="welcomeDrum"></div>
+      </span>
+      <span class="welcome-static">&nbsp;を歓迎します</span>
+    </div>
+  </div>
+
+  <!-- フィーチャー -->
   <div class="features-wrap">
     <div class="feat-row">
       <div class="feat">
@@ -372,12 +382,14 @@ body:hover #cursor{opacity:1}
     </div>
   </div>
 
+  <!-- タグ / 宣伝 -->
   <div class="sub-row">
     <div class="tag-label">SERVER TAG</div>
     <div class="tag-pill">｟作業中毒｠</div>
     <div class="ad-note">📣 宣伝目的でも OK</div>
   </div>
 
+  <!-- レビュー -->
   <div class="review-section">
     <div class="review-header">
       <div class="review-eyebrow">SERVER REVIEW</div>
@@ -386,9 +398,7 @@ body:hover #cursor{opacity:1}
     <div class="review-links">
       <a class="review-link-item" href="https://disboard.org/ja/server/1206513612043325440" target="_blank">
         <div class="review-site">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           DISBOARD
         </div>
         <div class="review-desc">Discord サーバー掲示板</div>
@@ -396,9 +406,7 @@ body:hover #cursor{opacity:1}
       </a>
       <a class="review-link-item" href="https://dissoku.net/ja/server/1206513612043325440" target="_blank">
         <div class="review-site">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
-            <path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/>
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"><path d="M18 13v6a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>
           ディス速
         </div>
         <div class="review-desc">Discord 掲示板・サーバー募集</div>
@@ -407,6 +415,7 @@ body:hover #cursor{opacity:1}
     </div>
   </div>
 
+  <!-- フッター -->
   <footer class="foot">
     <div class="foot-left">運営：猫奈 @n_ekona</div>
     <div class="foot-links">
@@ -419,89 +428,150 @@ body:hover #cursor{opacity:1}
 </div>
 
 <script>
-/* ── 背景スライダー ── */
+/* ══════════════════════════════
+   ルーレット
+══════════════════════════════ */
+const WELCOMES = [
+  '自作OSしている人',
+  '全員',
+  '作業仲間を探している人',
+  '音ゲーマー',
+  '絵を上達したい人',
+  '映像を強くしたい人',
+  '電子工作をしている人',
+  '技術の無駄遣いをしたい人',
+  '映像・作曲合作したい人',
+];
+
+const drum   = document.getElementById('welcomeDrum');
+const slot   = document.getElementById('welcomeSlot');
+
+// ドラムにアイテムを詰める（無限ループ用に3周分）
+const items = [...WELCOMES, ...WELCOMES, ...WELCOMES];
+items.forEach(text => {
+  const el = document.createElement('div');
+  el.className = 'welcome-item';
+  el.textContent = text;
+  drum.appendChild(el);
+});
+
+// スロット窓の高さ = 1行分
+// （フォントサイズは JS で取得してから設定）
+let itemH   = 0;
+let current = 0;          // 現在表示中のインデックス（WELCOMES 内）
+let isAnim  = false;
+
+function initSlot() {
+  // アイテム1つの実高さを測る（CSSのheightをそのまま使う）
+  const firstEl = drum.firstElementChild;
+  itemH = firstEl.getBoundingClientRect().height || 36;
+  // slot.style.height は CSS側に任せる
+
+  // 最初は真ん中の周（インデックス = WELCOMES.length）を起点に
+  current = 0;
+  drum.style.transform = `translateY(${-WELCOMES.length * itemH}px)`;
+  drum.style.transition = 'none';
+}
+
+// easeOutElastic 相当のカスタムイージング（cubic-bezier で近似）
+// 減速→少し戻る→止まる
+const EASE_OUT = 'cubic-bezier(0.22, 1.0, 0.36, 1.0)';
+const EASE_BOUNCE = 'cubic-bezier(0.34, 1.56, 0.64, 1.0)';
+
+function next() {
+  if (isAnim) return;
+  isAnim = true;
+
+  current = (current + 1) % WELCOMES.length;
+
+  // ドラム上では真ん中の周 + current
+  const targetIdx = WELCOMES.length + current;
+  const targetY   = -targetIdx * itemH;
+
+  drum.style.transition = `transform 640ms ${EASE_BOUNCE}`;
+  drum.style.transform  = `translateY(${targetY}px)`;
+
+  // アニメーション完了後にリセット（シームレス無限ループ）
+  drum.addEventListener('transitionend', function onEnd() {
+    drum.removeEventListener('transitionend', onEnd);
+
+    // 同じ表示のまま先頭周に巻き戻す（transition:none で瞬間）
+    drum.style.transition = 'none';
+    drum.style.transform  = `translateY(${-current * itemH}px)`;
+
+    isAnim = false;
+  });
+}
+
+window.addEventListener('load', () => {
+  initSlot();
+  // 2.8秒ごとに切替
+  setInterval(next, 2800);
+});
+
+/* ══════════════════════════════
+   背景スライダー
+══════════════════════════════ */
 const IMAGES = ['images/bg1.png','images/bg2.png','images/bg3.png','images/bg4.png'];
 const bgA = document.getElementById('bgA');
 const bgB = document.getElementById('bgB');
 const dots = document.querySelectorAll('.bg-dot');
-let current = 0, useA = true, timer = null;
+let bgCur=0, useA=true, bgTimer=null;
 
 function updateDots(i){ dots.forEach((d,idx)=>d.classList.toggle('active',idx===i)); }
 function switchBg(n){
-  if(n===current) return;
+  if(n===bgCur) return;
   const back = useA ? bgB : bgA;
   const front= useA ? bgA : bgB;
-  back.style.backgroundImage = `url('${IMAGES[n]}')`;
+  back.style.backgroundImage=`url('${IMAGES[n]}')`;
   back.classList.add('active');
   front.classList.remove('active');
-  useA=!useA; current=n; updateDots(n);
+  useA=!useA; bgCur=n; updateDots(n);
 }
-function jumpTo(i){ clearInterval(timer); switchBg(i); startTimer(); }
-function startTimer(){ timer=setInterval(()=>switchBg((current+1)%IMAGES.length),8000); }
+function jumpTo(i){ clearInterval(bgTimer); switchBg(i); startBgTimer(); }
+function startBgTimer(){ bgTimer=setInterval(()=>switchBg((bgCur+1)%IMAGES.length),8000); }
+const si=Math.floor(Math.random()*IMAGES.length);
+bgA.style.backgroundImage=`url('${IMAGES[si]}')`;
+bgCur=si; updateDots(si);
+startBgTimer();
 
-const startIdx = Math.floor(Math.random()*IMAGES.length);
-bgA.style.backgroundImage = `url('${IMAGES[startIdx]}')`;
-current = startIdx; updateDots(startIdx);
-startTimer();
-
-/* ── カーソル ── */
-const cursor = document.getElementById('cursor');
-let mx=0, my=0;
-
-document.addEventListener('mousemove', e=>{
-  mx = e.clientX; my = e.clientY;
-  cursor.style.left = mx+'px';
-  cursor.style.top  = my+'px';
+/* ══════════════════════════════
+   カーソル
+══════════════════════════════ */
+const cursor=document.getElementById('cursor');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px';
+  cursor.style.top=my+'px';
 });
 
-/* ── 花びら ── */
-// 桜ピンク〜薄紫〜白の淡い色パレット
-const PETAL_COLORS = [
-  'rgba(255,183,197,0.82)',
-  'rgba(255,200,210,0.75)',
-  'rgba(240,180,220,0.78)',
-  'rgba(220,190,240,0.72)',
-  'rgba(255,220,230,0.80)',
-  'rgba(255,240,245,0.70)',
+/* ══════════════════════════════
+   花びら
+══════════════════════════════ */
+const PETAL_COLORS=[
+  'rgba(255,183,197,0.82)','rgba(255,200,210,0.75)',
+  'rgba(240,180,220,0.78)','rgba(220,190,240,0.72)',
+  'rgba(255,220,230,0.80)','rgba(255,240,245,0.70)',
 ];
-
-let lastPetal = 0;
-
+let lastPetal=0;
 function spawnPetal(){
-  const now = Date.now();
-  if(now - lastPetal < 60) return; // 連続生成を間引く
-  lastPetal = now;
-
-  const el = document.createElement('div');
-  el.className = 'petal';
-
-  const size  = 7 + Math.random()*8;          // 7〜15px
-  const color = PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)];
-  const dur   = 900 + Math.random()*700;      // 0.9〜1.6s
-  const dx    = (Math.random()-0.5)*80;       // 横流れ
-  const dy    = 60 + Math.random()*60;        // 下落距離
-  const dr    = (Math.random()-0.5)*360+'deg';// 回転
-
-  el.style.cssText = `
-    left:${mx}px;
-    top:${my}px;
-    width:${size}px;
-    height:${size * 0.65}px;
-    background:${color};
-    --dx:${dx}px;
-    --dy:${dy}px;
-    --dr:${dr};
-    animation-duration:${dur}ms;
-    margin:${-size/2}px 0 0 ${-size/2}px;
-    transform-origin:center center;
-    filter:blur(0.4px);
-  `;
-
+  const now=Date.now();
+  if(now-lastPetal<60) return;
+  lastPetal=now;
+  const el=document.createElement('div');
+  el.className='petal';
+  const size=7+Math.random()*8;
+  const color=PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)];
+  const dur=900+Math.random()*700;
+  const dx=(Math.random()-.5)*80;
+  const dy=60+Math.random()*60;
+  const dr=(Math.random()-.5)*360+'deg';
+  el.style.cssText=`left:${mx}px;top:${my}px;width:${size}px;height:${size*.65}px;background:${color};--dx:${dx}px;--dy:${dy}px;--dr:${dr};animation-duration:${dur}ms;margin:${-size/2}px 0 0 ${-size/2}px;filter:blur(0.4px);`;
   document.body.appendChild(el);
   el.addEventListener('animationend',()=>el.remove());
 }
-
-document.addEventListener('mousemove', spawnPetal);
+document.addEventListener('mousemove',spawnPetal);
 </script>
 </body>
 </html>
