@@ -84,3 +84,19 @@ const SKILLS = [
   { name: '電子工作',   color: '#9A8BFF', tools: ['Arduino', 'ESP32', 'KiCad', 'はんだづけ'] },
   { name: '作曲',       color: '#5BC8C0', tools: ['DAW', 'Studio One'] },
 ];
+
+/* =====================================================================
+   ヒーロー背景メディア — トップの「心に残る映像を…」の背景に
+   ぼかし・無音で表示。複数入れると 7秒ごとにランダムで切り替わります。
+   （1件だけのときは切り替えず、その動画をループ再生）
+   ---------------------------------------------------------------------
+     YouTube : { type:'youtube', id:'動画ID', start: 開始秒 }
+     画像     : { type:'image',   src:'assets/img/hero/xxxx.jpg' }
+   ※ 動画IDは URL の v= のあと。例 youtube.com/watch?v=yXCAgFOrLLA → 'yXCAgFOrLLA'
+   ===================================================================== */
+const HERO_MEDIA = [
+  { type: 'youtube', id: 'yXCAgFOrLLA', start: 27 },
+  // ↓ 追加例（コメントを外して使う）。複数あると7秒ごとにランダム切替
+  // { type: 'youtube', id: 'XXXXXXXXXXX', start: 0 },
+  // { type: 'image',   src: 'assets/img/hero/sample.jpg' },
+];

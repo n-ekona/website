@@ -55,9 +55,10 @@ html,body{
   line-height:1.95;
   -webkit-font-smoothing:antialiased;
   text-rendering:optimizeLegibility;
-  overflow-x:hidden;
+  overflow-x:clip; /* hidden だと position:sticky が壊れるため clip を使う */
 }
-body{min-height:100vh;position:relative}
+/* body は透明に（背景は html が持つ）。これで負の z-index の背景レイヤーが隠れない */
+body{min-height:100vh;position:relative;background:transparent}
 
 .mono{font-family:'Noto Sans JP',system-ui,sans-serif;font-variant-numeric:tabular-nums;letter-spacing:.04em}
 .serif{font-family:'Noto Serif JP',serif;font-weight:500}
@@ -89,11 +90,42 @@ img{max-width:100%;display:block}
   background-size:200px 200px;
 }
 
+/* ---------- ヒーロー背景メディア（全面・ぼかし・無音） ---------- */
+.hero-bg{
+  position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden;background:#000;
+  opacity:0;transition:opacity .8s var(--ease);
+}
+.hero-bg.is-active{opacity:1}
+.hero-bg-media{
+  position:absolute;inset:0;overflow:hidden;background:#000;
+  filter:blur(26px) saturate(1.08) brightness(.62);
+  transform:scale(1.08);
+}
+/* サムネ画像（常時表示。動画が再生できない環境でもこれが見える） */
+.hero-bg-thumb{position:absolute;inset:0;background:#000 center/cover no-repeat}
+/* 動画プレーヤー（実際に再生started したらフェードイン） */
+.hero-bg-player{position:absolute;inset:0;opacity:0;transition:opacity 1s var(--ease)}
+.hero-bg-player.is-playing{opacity:1}
+.hero-bg-media iframe{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:100vw!important;height:56.25vw!important;
+  min-width:177.78vh!important;min-height:100vh!important;
+  border:0;pointer-events:none;
+}
+.hero-bg-veil{
+  position:absolute;inset:0;
+  background:
+    linear-gradient(90deg, rgba(7,8,11,.66) 0%, rgba(7,8,11,.34) 52%, rgba(7,8,11,.12) 100%),
+    linear-gradient(180deg, rgba(7,8,11,.38) 0%, rgba(7,8,11,.30) 48%, rgba(7,8,11,.82) 100%);
+}
+/* スクロール量に応じて濃くなる暗幕（JSで opacity を制御） */
+.hero-bg-dark{position:absolute;inset:0;background:#05060a;opacity:0;pointer-events:none}
+
 /* ---------- 桜の花びら ---------- */
 .petal{
   position:fixed;top:0;left:0;pointer-events:none;z-index:9998;
   border-radius:80% 0 80% 0;
-  animation:petalFall linear forwards;
+  animation:petalFall var(--pdur,1200ms) linear forwards;
 }
 @keyframes petalFall{
   0%  {transform:translate(0,0) rotate(0deg) scale(1);opacity:.88}
@@ -476,5 +508,6 @@ body.has-cursor a,body.has-cursor button{cursor:none}
   *,*::before,*::after{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
   .reveal{opacity:1;transform:none}
   .bg-glow{display:none}
-  .petal{display:none}
+  /* 桜の花びらは reduced-motion でも常に表示・アニメさせる（ユーザー要望） */
+  .petal{animation-duration:var(--pdur,1200ms)!important;animation-iteration-count:1!important}
 }

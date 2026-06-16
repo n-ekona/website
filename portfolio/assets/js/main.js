@@ -191,6 +191,99 @@
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') close(true); });
   }
 
+  /* ---------- YouTube IFrame API のローダ ---------- */
+  let _ytLoading = false; const _ytQueue = [];
+  function loadYouTubeAPI(cb) {
+    if (window.YT && window.YT.Player) { cb(); return; }
+    _ytQueue.push(cb);
+    if (_ytLoading) return;
+    _ytLoading = true;
+    const prev = window.onYouTubeIframeAPIReady;
+    window.onYouTubeIframeAPIReady = function () {
+      if (typeof prev === 'function') { try { prev(); } catch (e) {} }
+      _ytQueue.splice(0).forEach((fn) => { try { fn(); } catch (e) {} });
+    };
+    const s = document.createElement('script');
+    s.src = 'https://www.youtube.com/iframe_api';
+    document.head.appendChild(s);
+  }
+
+  /* ---------- ヒーロー背景メディア（YouTube/画像・ぼかし無音・7秒ランダム切替） ---------- */
+  function initHeroBg() {
+    const heroBg = $('#heroBg');
+    const wrap = $('#heroBgMedia');
+    const hero = $('#hero');
+    if (!heroBg || !wrap || !hero) return;
+    if (typeof HERO_MEDIA === 'undefined' || !Array.isArray(HERO_MEDIA)) return;
+    const media = HERO_MEDIA.filter((m) => m && (m.type === 'youtube' ? m.id : m.src));
+    if (!media.length) return;
+
+    // サムネ層（常時表示）＋ プレーヤー層（再生時にフェードイン）
+    const thumb = document.createElement('div'); thumb.className = 'hero-bg-thumb';
+    const stage = document.createElement('div'); stage.className = 'hero-bg-player';
+    wrap.appendChild(thumb); wrap.appendChild(stage);
+
+    let player = null;
+    const clearPlayer = () => {
+      stage.classList.remove('is-playing');
+      if (player) { try { player.destroy(); } catch (e) {} player = null; }
+      stage.innerHTML = '';
+    };
+
+    const showYouTube = (m) => {
+      const id = m.id;
+      // サムネは maxres → 無ければ hq（背景の重ね順でフォールバック）
+      thumb.style.backgroundImage =
+        "url('https://i.ytimg.com/vi/" + id + "/maxresdefault.jpg'), url('https://i.ytimg.com/vi/" + id + "/hqdefault.jpg')";
+      clearPlayer();
+      const host = document.createElement('div');
+      stage.appendChild(host);
+      loadYouTubeAPI(function () {
+        if (!host.isConnected) return; // 既に切り替わっていたら何もしない
+        player = new YT.Player(host, {
+          videoId: id,
+          playerVars: {
+            autoplay: 1, mute: 1, controls: 0, loop: 1, playlist: id,
+            start: (parseInt(m.start, 10) || 0),
+            modestbranding: 1, playsinline: 1, rel: 0, disablekb: 1, fs: 0, iv_load_policy: 3,
+          },
+          events: {
+            onReady: (e) => { try { e.target.mute(); e.target.playVideo(); } catch (err) {} },
+            onStateChange: (e) => { if (e.data === 1) stage.classList.add('is-playing'); }, // 1=PLAYING
+          },
+        });
+      });
+    };
+
+    const showImage = (m) => { clearPlayer(); thumb.style.backgroundImage = "url('" + m.src + "')"; };
+
+    let cur = -1;
+    const show = (i) => { const m = media[i]; if (m.type === 'youtube') showYouTube(m); else showImage(m); cur = i; };
+    const next = () => {
+      if (media.length === 1) { if (cur !== 0) show(0); return; }
+      let n; do { n = (Math.random() * media.length) | 0; } while (n === cur);
+      show(n);
+    };
+    next();
+    if (media.length > 1) setInterval(next, 7000);
+
+    // 表示ON（イントロでふわっと）＋ 下にスクロールするほど動画を暗くする
+    heroBg.classList.add('is-active');
+    const dark = $('#heroBgDark');
+    let ticking = false;
+    const onScroll = () => {
+      if (ticking) return;
+      ticking = true;
+      requestAnimationFrame(() => {
+        const p = Math.min(1, Math.max(0, window.scrollY / (window.innerHeight * 0.9)));
+        if (dark) dark.style.opacity = p.toFixed(3);
+        ticking = false;
+      });
+    };
+    window.addEventListener('scroll', onScroll, { passive: true });
+    onScroll();
+  }
+
   /* ---------- 固定ヘッダー: スクロールで締める ---------- */
   function initStickyHeader() {
     const bar = $('#topbar');
@@ -248,11 +341,11 @@
 
   /* ---------- 桜の花びら（カーソル追従 + 上から舞い散る） ---------- */
   function initPetals() {
-    if (reduceMotion) return;
-    // 花びらの色（DiscordWeb /d と同じ青系パレット）
+    // ※ ユーザー要望により reduced-motion でも常に表示する
+    // 花びらの色（桜のピンク）
     const PETALS = [
-      'rgba(120,200,240,0.80)', 'rgba(88,101,242,0.74)', 'rgba(55,214,240,0.78)',
-      'rgba(176,184,255,0.74)', 'rgba(150,180,230,0.80)', 'rgba(120,160,230,0.70)',
+      'rgba(255,170,200,0.86)', 'rgba(247,148,190,0.82)', 'rgba(255,200,218,0.82)',
+      'rgba(244,138,182,0.84)', 'rgba(255,186,206,0.80)', 'rgba(236,160,192,0.82)',
     ];
     const rnd = (a, b) => a + Math.random() * (b - a);
     const pick = (a) => a[(Math.random() * a.length) | 0];
@@ -279,7 +372,7 @@
       el.style.setProperty('--dx', dx.toFixed(0) + 'px');
       el.style.setProperty('--dy', dy.toFixed(0) + 'px');
       el.style.setProperty('--dr', dr);
-      el.style.animationDuration = dur.toFixed(0) + 'ms';
+      el.style.setProperty('--pdur', dur.toFixed(0) + 'ms');
       document.body.appendChild(el);
       // animationend を取りこぼしても必ずカウントを戻す（保険）
       let done = false;
@@ -288,16 +381,14 @@
       setTimeout(cleanup, dur * 1.5 + 200);
     }
 
-    // カーソル追従で花びらが舞う（DiscordWeb /d と同じ挙動・細ポインタ環境）
-    if (finePointer) {
-      let lastT = 0;
-      window.addEventListener('mousemove', (e) => {
-        const now = performance.now();
-        if (now - lastT < 60) return;
-        lastT = now;
-        petal(e.clientX, e.clientY);
-      }, { passive: true });
-    }
+    // カーソル追従で花びらが舞う（DiscordWeb /d と同じ：pointer 種別で制限しない）
+    let lastT = 0;
+    window.addEventListener('mousemove', (e) => {
+      const now = performance.now();
+      if (now - lastT < 60) return;
+      lastT = now;
+      petal(e.clientX, e.clientY);
+    }, { passive: true });
   }
 
   /* ---------- 初期化 ---------- */
@@ -313,5 +404,6 @@
     initScrollRail();
     initCursor();
     initPetals();
+    initHeroBg();
   });
 })();
