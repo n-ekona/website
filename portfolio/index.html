@@ -1,0 +1,296 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NekoNA — デジタル＆アナログクリエイター｜Portfolio</title>
+<meta name="description" content="NekoNA(猫奈)のポートフォリオ。心に残る映像づくりと、人を驚かせる電子工作。デジタル＆アナログクリエイターの作品・制作プロセス・連絡先。">
+<meta name="theme-color" content="#0B0A08">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://nekona.jp/">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<!-- Open Graph / Twitter -->
+<meta property="og:type" content="website">
+<meta property="og:title" content="NekoNA — デジタル＆アナログクリエイター｜Portfolio">
+<meta property="og:description" content="心に残る映像を、人を驚かせる回路を。NekoNA(猫奈)のポートフォリオ。">
+<meta property="og:url" content="https://nekona.jp/">
+<meta property="og:image" content="https://nekona.jp/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@n_ekona">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+</head>
+<body>
+
+<!-- カスタムカーソル(細ポインタ環境のみJSで有効化) -->
+<div id="cursor" aria-hidden="true"></div>
+
+<!-- 背景レイヤー -->
+<div class="bg-base" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="bg-grain" aria-hidden="true"></div>
+
+<!-- 右端スクロール進捗トレース -->
+<div class="scroll-rail" aria-hidden="true"><span class="scroll-head"></span></div>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- ───────── ナビ ───────── -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="#hero">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-name">NekoNA</span>
+  </a>
+  <nav class="nav" id="nav-mobile" aria-label="セクション">
+    <a href="#about">About</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="#works">Works</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="#process">Process</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="blog.html">Blog</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="#contact">Contact</a>
+  </nav>
+  <div class="nav-social" aria-label="SNS">
+    <a href="https://www.youtube.com/@n_ekona" target="_blank" rel="noopener" aria-label="YouTube @n_ekona">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+    </a>
+    <a href="https://x.com/n_ekona" target="_blank" rel="noopener" aria-label="X(旧Twitter) @n_ekona">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+    <a href="https://nekona.jp/d" target="_blank" rel="noopener" aria-label="創作情報共有Discordサークル">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>
+    </a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false" aria-controls="nav-mobile">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<main id="main">
+
+  <!-- ───────── ヒーロー ───────── -->
+  <section class="hero" id="hero">
+    <div class="hero-inner">
+      <p class="eyebrow">NEKONA — PORTFOLIO</p>
+      <h1 class="hero-title">
+        心に残る映像を、<br>人を驚かせる回路を。
+      </h1>
+      <p class="hero-name"><span class="serif">NekoNA</span> ／ 猫奈 <span class="sep">·</span> デジタル＆アナログクリエイター</p>
+      <p class="hero-sub">心に残る映像づくりと、人を驚かせる電子工作が趣味。<br>デジタル(映像・デザイン)もアナログ(電子工作)も、どちらもつくっています。</p>
+
+      <p class="hero-status">お仕事のご相談、受付中です。</p>
+
+      <div class="hero-cta">
+        <a class="btn btn-primary" href="#works">作品を見る <span aria-hidden="true">↓</span></a>
+        <a class="btn btn-ghost" href="#contact">依頼・相談する</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ───────── About ───────── -->
+  <section class="section" id="about">
+    <div class="section-head reveal">
+      <p class="eyebrow">ABOUT / 二面性</p>
+      <h2 class="section-title">Digital <span class="swap">&amp;</span> Analog</h2>
+    </div>
+
+    <p class="about-lead reveal">
+      画面の中の<em>映像・デザイン</em>も、手のなかの<em>基板・回路</em>も。<br>
+      デジタルとアナログ、どちらもつくれます。
+    </p>
+
+    <div class="duo reveal">
+      <article class="duo-card">
+        <div class="duo-no mono">01 / DIGITAL</div>
+        <h3 class="duo-title">デジタル</h3>
+        <p class="duo-desc">映像制作・編集、モーション、グラフィック／デザイン。見る人の心に残る一本を。</p>
+        <ul class="chip-list">
+          <li>映像制作</li><li>編集</li><li>モーション</li><li>デザイン</li>
+        </ul>
+      </article>
+      <div class="duo-link" aria-hidden="true"><span class="duo-node"></span></div>
+      <article class="duo-card">
+        <div class="duo-no mono">02 / ANALOG</div>
+        <h3 class="duo-title">アナログ</h3>
+        <p class="duo-desc">電子工作・回路・はんだづけ。技術の無駄づかいで、人を驚かせる装置を。</p>
+        <ul class="chip-list">
+          <li>電子工作</li><li>回路設計</li><li>はんだづけ</li><li>ものづくり</li>
+        </ul>
+      </article>
+    </div>
+  </section>
+
+  <!-- ───────── Works ───────── -->
+  <section class="section" id="works">
+    <div class="section-head reveal">
+      <p class="eyebrow">WORKS / 作品</p>
+      <h2 class="section-title">制作物</h2>
+      <p class="section-note">代表作は制作中です。順次公開していきます。</p>
+    </div>
+
+    <div class="tabs reveal" id="worksTabs" role="tablist" aria-label="作品カテゴリ">
+      <button class="tab is-active" id="tab-all" role="tab" aria-selected="true" aria-controls="worksGrid" data-filter="all">すべて</button>
+      <button class="tab" id="tab-video" role="tab" aria-selected="false" aria-controls="worksGrid" data-filter="video">映像</button>
+      <button class="tab" id="tab-illust" role="tab" aria-selected="false" aria-controls="worksGrid" data-filter="illust">イラスト</button>
+      <button class="tab" id="tab-cg" role="tab" aria-selected="false" aria-controls="worksGrid" data-filter="cg">3DCG</button>
+      <button class="tab" id="tab-electronics" role="tab" aria-selected="false" aria-controls="worksGrid" data-filter="electronics">電子工作</button>
+      <button class="tab" id="tab-music" role="tab" aria-selected="false" aria-controls="worksGrid" data-filter="music">作曲</button>
+    </div>
+
+    <div class="works-grid" id="worksGrid" role="tabpanel" aria-labelledby="tab-all">
+      <!-- JSが works.js のデータから生成 -->
+    </div>
+  </section>
+
+  <!-- ───────── Process ───────── -->
+  <section class="section" id="process">
+    <div class="section-head reveal">
+      <p class="eyebrow">PROCESS / できること</p>
+      <h2 class="section-title">制作の流れ</h2>
+      <p class="section-note">ご依頼から納品までの流れと、提供できること。</p>
+    </div>
+
+    <ol class="flow reveal">
+      <li class="flow-step">
+        <span class="flow-no mono">01</span>
+        <h3 class="flow-title">企画・ヒアリング</h3>
+        <p class="flow-desc">やりたいこと・目的・参考イメージをすり合わせ。映像でも装置でも、まず狙いを言葉に。</p>
+      </li>
+      <li class="flow-step">
+        <span class="flow-no mono">02</span>
+        <h3 class="flow-title">設計・撮影</h3>
+        <p class="flow-desc">映像は構成・撮影、電子工作は回路設計・試作。手を動かして形にしていきます。</p>
+      </li>
+      <li class="flow-step">
+        <span class="flow-no mono">03</span>
+        <h3 class="flow-title">編集・実装</h3>
+        <p class="flow-desc">編集・モーション・カラー、またははんだづけ・実装。細部まで作り込みます。</p>
+      </li>
+      <li class="flow-step">
+        <span class="flow-no mono">04</span>
+        <h3 class="flow-title">確認・納品</h3>
+        <p class="flow-desc">フィードバックを反映して仕上げ、納品。動くもの・残るものをお渡しします。</p>
+      </li>
+    </ol>
+  </section>
+
+  <!-- ───────── Skills ───────── -->
+  <section class="section" id="skills">
+    <div class="section-head reveal">
+      <p class="eyebrow">SKILLS / 道具</p>
+      <h2 class="section-title">使うもの</h2>
+      <p class="section-note">※ 実際に使うツールに合わせて編集してください(<span class="mono">assets/js/works.js</span> 下部 SKILLS)。</p>
+    </div>
+    <div class="skills-grid reveal" id="skillsGrid">
+      <!-- JSが生成 -->
+    </div>
+  </section>
+
+  <!-- ───────── Contact ───────── -->
+  <section class="section" id="contact">
+    <div class="section-head reveal">
+      <p class="eyebrow">CONTACT / 連絡先</p>
+      <h2 class="section-title">つながる</h2>
+      <p class="section-note">お仕事・コラボのご相談はお気軽に。ご連絡はメールでお願いします。</p>
+    </div>
+
+    <div class="contact-wrap reveal">
+      <div class="contact-group">
+        <div class="contact-label mono">WORK / お仕事・制作</div>
+        <div class="contact-links">
+          <a class="contact-card" href="mailto:nekona.works@gmail.com">
+            <span class="contact-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg>
+            </span>
+            <span class="contact-meta"><span class="contact-name">メール</span><span class="contact-handle mono">nekona.works@gmail.com</span></span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="contact-card" href="https://www.youtube.com/@n_ekona" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+            </span>
+            <span class="contact-meta"><span class="contact-name">YouTube</span><span class="contact-handle mono">@n_ekona</span></span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="contact-card" href="https://x.com/n_ekona" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </span>
+            <span class="contact-meta"><span class="contact-name">X(仕事)</span><span class="contact-handle mono">@n_ekona</span></span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="contact-card" href="https://nekona.jp/d" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.79 19.79 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.74 19.74 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057a.082.082 0 0 0 .031.057 19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028 14.09 14.09 0 0 0 1.226-1.994.076.076 0 0 0-.041-.106 13.1 13.1 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.3 12.3 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.84 19.84 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03zM8.02 15.33c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.956-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.956 2.419-2.157 2.419zm7.975 0c-1.183 0-2.157-1.085-2.157-2.419 0-1.333.955-2.418 2.157-2.418 1.21 0 2.176 1.094 2.157 2.418 0 1.334-.946 2.419-2.157 2.419z"/></svg>
+            </span>
+            <span class="contact-meta"><span class="contact-name">創作情報共有Discordサークル</span><span class="contact-handle mono">nekona.jp/d</span></span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+          <a class="contact-card" href="https://nekona.jp/" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12 12 3l9 9"/><path d="M9 21V12h6v9"/></svg>
+            </span>
+            <span class="contact-meta"><span class="contact-name">Website</span><span class="contact-handle mono">nekona.jp</span></span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+      </div>
+
+      <div class="contact-group">
+        <div class="contact-label mono">PERSONAL / 趣味</div>
+        <div class="contact-links">
+          <a class="contact-card contact-card--alt" href="https://x.com/nekolnu" target="_blank" rel="noopener">
+            <span class="contact-ico" aria-hidden="true">
+              <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+            </span>
+            <span class="contact-meta"><span class="contact-name">X(趣味)</span><span class="contact-handle mono">@nekolnu</span></span>
+            <span class="contact-arrow" aria-hidden="true">→</span>
+          </a>
+        </div>
+        <p class="contact-foot-note">趣味アカウントは制作とは別枠で、ゆるく動かしています。</p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<!-- ───────── フッター ───────── -->
+<footer class="foot">
+  <div class="foot-line" aria-hidden="true"></div>
+  <div class="foot-inner">
+    <div class="foot-left">
+      <span class="foot-brand">NekoNA</span>
+      <span class="foot-by mono">運営：猫奈 @n_ekona</span>
+    </div>
+    <nav class="foot-links" aria-label="フッターリンク">
+      <a href="https://nekona.jp/" target="_blank" rel="noopener">nekona.jp</a>
+      <a href="https://www.youtube.com/@n_ekona" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://x.com/n_ekona" target="_blank" rel="noopener">X(仕事)</a>
+      <a href="https://x.com/nekolnu" target="_blank" rel="noopener">X(趣味)</a>
+      <a href="https://nekona.jp/d" target="_blank" rel="noopener">Discord</a>
+      <a href="blog.html">Blog</a>
+    </nav>
+  </div>
+  <div class="foot-copy mono">© 2026 NekoNA. All rights reserved.</div>
+</footer>
+
+<!-- ライトボックス(デザイン作品の拡大表示) -->
+<div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="作品の拡大表示" hidden>
+  <button class="lightbox-close" id="lightboxClose" aria-label="閉じる">×</button>
+  <figure class="lightbox-figure">
+    <img id="lightboxImg" src="" alt="">
+    <figcaption id="lightboxCap" class="lightbox-cap"></figcaption>
+  </figure>
+</div>
+
+<script src="assets/js/works.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>

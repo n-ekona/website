@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Blog — NekoNA</title>
+<meta name="description" content="NekoNA(猫奈)のブログ。映像・デザイン・電子工作の制作ログや考えていること。">
+<meta name="theme-color" content="#0B0A08">
+<meta name="color-scheme" content="dark">
+<link rel="canonical" href="https://nekona.jp/blog.html">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Blog — NekoNA">
+<meta property="og:description" content="NekoNA(猫奈)のブログ。">
+<meta property="og:url" content="https://nekona.jp/blog.html">
+<meta property="og:image" content="https://nekona.jp/assets/img/og.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@n_ekona">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;700&family=Noto+Serif+JP:wght@300;400;500;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css">
+<link rel="stylesheet" href="assets/css/blog.css">
+</head>
+<body>
+
+<div id="cursor" aria-hidden="true"></div>
+<div class="bg-base" aria-hidden="true"></div>
+<div class="bg-glow" aria-hidden="true"></div>
+<div class="bg-grain" aria-hidden="true"></div>
+
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- ナビ -->
+<header class="topbar" id="topbar">
+  <a class="brand" href="index.html">
+    <span class="brand-mark" aria-hidden="true"></span>
+    <span class="brand-name">NekoNA</span>
+  </a>
+  <nav class="nav" id="nav-mobile" aria-label="セクション">
+    <a href="index.html#about">About</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="index.html#works">Works</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="index.html#process">Process</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="blog.html" class="is-current">Blog</a>
+    <span class="vr" aria-hidden="true"></span>
+    <a href="index.html#contact">Contact</a>
+  </nav>
+  <div class="nav-social" aria-label="SNS">
+    <a href="https://www.youtube.com/@n_ekona" target="_blank" rel="noopener" aria-label="YouTube @n_ekona">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.2a3 3 0 0 0-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 0 0 .5 6.2C0 8.1 0 12 0 12s0 3.9.5 5.8a3 3 0 0 0 2.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 0 0 2.1-2.1C24 15.9 24 12 24 12s0-3.9-.5-5.8zM9.7 15.5V8.5l6.3 3.5-6.3 3.5z"/></svg>
+    </a>
+    <a href="https://x.com/n_ekona" target="_blank" rel="noopener" aria-label="X(旧Twitter) @n_ekona">
+      <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+    </a>
+  </div>
+  <button class="nav-toggle" id="navToggle" aria-label="メニューを開閉" aria-expanded="false" aria-controls="nav-mobile">
+    <span></span><span></span><span></span>
+  </button>
+</header>
+
+<main id="main" class="blog-main">
+
+  <div class="blog-head">
+    <div id="blogHeadTitle">
+      <p class="eyebrow">BLOG / ログ</p>
+      <h1 class="section-title">書いたもの</h1>
+      <p class="section-note">映像・デザイン・電子工作の制作ログや、考えていること。</p>
+    </div>
+    <div class="admin-bar" id="adminBar" hidden></div>
+  </div>
+
+  <!-- セットアップ未完了の案内（config.js が空のとき表示） -->
+  <section class="setup-notice" id="setupNotice" hidden>
+    <h2>ブログの初期設定がまだです</h2>
+    <p>ブログ機能を使うには、Supabase の接続情報を設定してください。手順は <code>portfolio/README.md</code> の「ブログ(Supabase)セットアップ」を参照してください。</p>
+    <ol>
+      <li>Supabase で無料プロジェクトを作成</li>
+      <li>SQL エディタで <code>posts</code> / <code>news</code> テーブルと RLS を作成(READMEにSQLあり)</li>
+      <li>Authentication で新規登録を無効化し、自分のユーザーを1つ追加</li>
+      <li><code>assets/js/config.js</code> に Project URL と anon key を貼る</li>
+    </ol>
+    <p class="setup-foot mono">※ 設定が終わると、このメッセージは自動的に消えます。</p>
+  </section>
+
+  <!-- 一覧 -->
+  <section class="blog-list" id="blogList" aria-label="記事一覧"></section>
+
+  <!-- 単一記事 -->
+  <article class="blog-post" id="blogPost" hidden></article>
+
+</main>
+
+<footer class="foot">
+  <div class="foot-line" aria-hidden="true"></div>
+  <div class="foot-inner">
+    <div class="foot-left">
+      <span class="foot-brand">NekoNA</span>
+      <span class="foot-by mono">運営：猫奈 @n_ekona</span>
+    </div>
+    <nav class="foot-links" aria-label="フッターリンク">
+      <a href="index.html">Portfolio</a>
+      <a href="https://nekona.jp/" target="_blank" rel="noopener">nekona.jp</a>
+      <a href="https://www.youtube.com/@n_ekona" target="_blank" rel="noopener">YouTube</a>
+      <a href="https://x.com/n_ekona" target="_blank" rel="noopener">X(仕事)</a>
+      <a href="https://x.com/nekolnu" target="_blank" rel="noopener">X(趣味)</a>
+    </nav>
+  </div>
+  <div class="foot-copy mono">© 2026 NekoNA. All rights reserved.</div>
+</footer>
+
+<!-- モーダル -->
+<div class="modal" id="loginModal" role="dialog" aria-modal="true" aria-label="ログイン" hidden></div>
+<div class="editor-modal" id="editorModal" role="dialog" aria-modal="true" aria-label="投稿エディタ" hidden></div>
+
+<script src="assets/js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="assets/js/markdown.js"></script>
+<script src="assets/js/blog.js"></script>
+<script src="assets/js/main.js"></script>
+</body>
+</html>
