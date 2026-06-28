@@ -121,6 +121,31 @@ img{max-width:100%;display:block}
 /* スクロール量に応じて濃くなる暗幕（JSで opacity を制御） */
 .hero-bg-dark{position:absolute;inset:0;background:#05060a;opacity:0;pointer-events:none}
 
+/* ---------- ローディング ---------- */
+.loader{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--bg,#0B0A08);
+  transition:opacity .8s ease,visibility .8s ease;
+}
+.loader.done{opacity:0;visibility:hidden}
+.loader-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
+.loader-mark{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:21px;letter-spacing:.42em;padding-left:.42em;
+  color:var(--ink,#F0ECE4);opacity:.92;
+}
+.loader-bar{
+  position:relative;width:118px;height:2px;border-radius:2px;
+  background:rgba(240,236,228,.12);overflow:hidden;
+}
+.loader-bar i{
+  position:absolute;top:0;left:-40%;height:100%;width:40%;
+  background:linear-gradient(90deg,transparent,rgba(240,236,228,.72),transparent);
+  animation:loaderSlide 1.15s ease-in-out infinite;
+}
+@keyframes loaderSlide{0%{left:-42%}100%{left:100%}}
+
 /* ---------- 桜の花びら ---------- */
 .petal{
   position:fixed;top:0;left:0;pointer-events:none;z-index:9998;
@@ -510,4 +535,7 @@ body.has-cursor a,body.has-cursor button{cursor:none}
   .bg-glow{display:none}
   /* 桜の花びらは reduced-motion でも常に表示・アニメさせる（ユーザー要望） */
   .petal{animation-duration:var(--pdur,1200ms)!important;animation-iteration-count:1!important}
+  /* ローダーも reduced-motion で動かす */
+  .loader{transition-duration:.8s!important}
+  .loader-bar i{animation-duration:1.15s!important;animation-iteration-count:infinite!important}
 }

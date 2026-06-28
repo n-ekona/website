@@ -74,6 +74,31 @@ html,body{
   100%{transform:translate(var(--dx),var(--dy)) rotate(var(--dr)) scale(.28);opacity:0}
 }
 
+/* ── ローディング ── */
+.loader{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  background:#0B0A08;cursor:none;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+.loader.done{opacity:0;visibility:hidden}
+.loader-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
+.loader-mark{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:21px;letter-spacing:.42em;padding-left:.42em;
+  color:var(--ink);opacity:.92;
+}
+.loader-bar{
+  position:relative;width:118px;height:2px;border-radius:2px;
+  background:rgba(255,255,255,.12);overflow:hidden;
+}
+.loader-bar i{
+  position:absolute;top:0;left:-40%;height:100%;width:40%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent);
+  animation:loaderSlide 1.15s ease-in-out infinite;
+}
+@keyframes loaderSlide{0%{left:-42%}100%{left:100%}}
+
 /* ── ページ ── */
 .page{
   position:relative;z-index:2;
@@ -348,10 +373,22 @@ html,body{
 /* ── 視差効果を減らす設定の尊重 ── */
 @media (prefers-reduced-motion:reduce){
   *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  /* 花びら・ローダーは reduced-motion でも動かす（ユーザー要望） */
+  .petal{animation-duration:var(--pdur,1500ms)!important;animation-iteration-count:1!important}
+  .loader{transition-duration:.8s!important}
+  .loader-bar i{animation-duration:1.15s!important;animation-iteration-count:infinite!important}
 }
 </style>
 </head>
 <body>
+
+<!-- ローディング -->
+<div id="loader" class="loader">
+  <div class="loader-inner">
+    <span class="loader-mark">nekoNA</span>
+    <span class="loader-bar"><i></i></span>
+  </div>
+</div>
 
 <div id="cursor"></div>
 
@@ -498,6 +535,7 @@ html,body{
       <a class="foot-link" href="https://nekona.jp/" target="_blank">nekona.jp</a>
       <a class="foot-link" href="https://discord.gg/DtBGGNVRYz" target="_blank">Discord</a>
       <a class="foot-link" href="https://nekona.jp/d" target="_blank">nekona.jp/d</a>
+      <a class="foot-link" href="https://nekona.jp/d-bot" target="_blank">制作BOT</a>
     </div>
   </footer>
 
@@ -643,13 +681,25 @@ function spawnPetal(){
   const dx=(Math.random()-.5)*80;
   const dy=60+Math.random()*60;
   const dr=(Math.random()-.5)*360+'deg';
-  el.style.cssText=`left:${mx}px;top:${my}px;width:${size}px;height:${size*.65}px;background:${color};--dx:${dx}px;--dy:${dy}px;--dr:${dr};animation-duration:${dur}ms;margin:${-size/2}px 0 0 ${-size/2}px;filter:blur(0.4px);`;
+  el.style.cssText=`left:${mx}px;top:${my}px;width:${size}px;height:${size*.65}px;background:${color};--dx:${dx}px;--dy:${dy}px;--dr:${dr};--pdur:${dur}ms;animation-duration:${dur}ms;margin:${-size/2}px 0 0 ${-size/2}px;filter:blur(0.4px);`;
   document.body.appendChild(el);
   el.addEventListener('animationend',()=>el.remove());
 }
-if(!window.matchMedia('(prefers-reduced-motion:reduce)').matches){
-  document.addEventListener('mousemove',spawnPetal);
-}
+/* 花びらは reduced-motion でも常に舞わせる（ユーザー要望） */
+document.addEventListener('mousemove',spawnPetal);
+document.addEventListener('touchmove',e=>{const t=e.touches[0];if(t){mx=t.clientX;my=t.clientY;spawnPetal();}},{passive:true});
+/* ══════════════════════════════
+   ローディング
+══════════════════════════════ */
+(function(){
+  const l=document.getElementById('loader'); if(!l) return;
+  let hidden=false;
+  function hide(){ if(hidden) return; hidden=true; l.classList.add('done'); setTimeout(()=>l.remove(),900); }
+  const first=new Image(); first.onload=()=>setTimeout(hide,250); first.onerror=hide; first.src=IMAGES[0];
+  window.addEventListener('load',()=>setTimeout(hide,250));
+  setTimeout(hide,4000); /* フォールバック */
+})();
+
 /* 装飾SVGをスクリーンリーダーから隠す（ラベル付きリンク内のアイコン） */
 document.querySelectorAll('svg').forEach(function(s){
   if(!s.getAttribute('aria-label')){ s.setAttribute('aria-hidden','true'); s.setAttribute('focusable','false'); }

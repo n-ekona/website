@@ -392,7 +392,23 @@
   }
 
   /* ---------- 初期化 ---------- */
+  /* ---------- ローディング画面 ---------- */
+  function initLoader() {
+    const l = document.getElementById('loader');
+    if (!l) return;
+    let hidden = false;
+    const hide = () => {
+      if (hidden) return;
+      hidden = true;
+      l.classList.add('done');
+      setTimeout(() => l.remove(), 900);
+    };
+    window.addEventListener('load', () => setTimeout(hide, 250));
+    setTimeout(hide, 4000); // フォールバック
+  }
+
   document.addEventListener('DOMContentLoaded', () => {
+    initLoader();
     renderWorks();
     renderSkills();
     initTabs();
