@@ -290,6 +290,35 @@ html,body{
 .review-desc{font-size:12px;letter-spacing:0.04em;color:var(--ink2);line-height:1.55}
 .review-action{font-size:10px;letter-spacing:0.1em;color:var(--ink3);margin-top:2px}
 
+/* ── 制作BOT ── */
+.bot-section{
+  margin:28px 36px 0;
+  border:0.5px solid var(--rule);
+  background:var(--glass2);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.bot-header{padding:18px 26px 14px;border-bottom:0.5px solid var(--rule)}
+.bot-eyebrow{font-size:10px;letter-spacing:0.22em;color:var(--ink3);margin-bottom:6px}
+.bot-title{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:15px;letter-spacing:0.08em;color:var(--ink);
+}
+.bot-body{
+  display:flex;align-items:center;gap:16px;
+  padding:20px 26px;text-decoration:none;transition:background .2s;
+}
+.bot-body:hover{background:rgba(255,255,255,0.05)}
+.bot-icon{
+  flex-shrink:0;width:42px;height:42px;border-radius:11px;
+  display:flex;align-items:center;justify-content:center;
+  border:0.5px solid var(--rule);background:rgba(255,255,255,0.04);color:var(--ink2);
+}
+.bot-icon svg{width:21px;height:21px;opacity:.82}
+.bot-text{flex:1;min-width:0;display:flex;flex-direction:column;gap:4px}
+.bot-name{font-size:12px;letter-spacing:0.06em;color:var(--ink)}
+.bot-desc{font-size:12px;letter-spacing:0.04em;color:var(--ink2);line-height:1.6}
+.bot-action{font-size:10px;letter-spacing:0.1em;color:var(--ink3);flex-shrink:0;white-space:nowrap}
+
 /* ── フッター ── */
 .foot{
   display:flex;align-items:center;justify-content:space-between;
@@ -354,7 +383,7 @@ html,body{
 @media (max-width:560px){
   .hero{padding:64px 22px 52px}
   .topbar{padding:16px 20px 14px}
-  .welcome-section,.features-wrap,.sub-row,.review-section,.news-section,.foot{margin-left:20px;margin-right:20px}
+  .welcome-section,.features-wrap,.sub-row,.review-section,.bot-section,.news-section,.foot{margin-left:20px;margin-right:20px}
   .welcome-roulette{flex-direction:column;align-items:flex-start;gap:4px}
   .welcome-slot{min-width:0;width:100%;margin:4px 0}
   .feat-row{grid-template-columns:1fr}
@@ -363,6 +392,8 @@ html,body{
   .review-links{grid-template-columns:1fr}
   .review-link-item{border-right:none;border-bottom:0.5px solid var(--rule)}
   .review-link-item:last-child{border-bottom:none}
+  .bot-body{flex-wrap:wrap;gap:12px 16px}
+  .bot-action{width:100%}
   .news-item{padding:14px 20px}
 }
 /* ── タッチ端末ではカスタムカーソルを無効化 ── */
@@ -528,13 +559,30 @@ html,body{
     </div>
   </div>
 
+  <!-- 制作BOT -->
+  <div class="bot-section">
+    <div class="bot-header">
+      <div class="bot-eyebrow">SERVER BOT</div>
+      <div class="bot-title">制作BOT</div>
+    </div>
+    <a class="bot-body" href="https://nekona.jp/d-bot" target="_blank">
+      <div class="bot-icon">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" stroke-linejoin="round"><rect x="4" y="8" width="16" height="11" rx="3"/><path d="M12 8V4.5"/><circle cx="12" cy="3.2" r="1.1"/><path d="M9.2 13h.01M14.8 13h.01"/><path d="M4 12.5H2.4M21.6 12.5H20"/></svg>
+      </div>
+      <div class="bot-text">
+        <div class="bot-name">サーバー管理BOT</div>
+        <div class="bot-desc">指定した期間のメッセージ数やアクティブVCの時間を計測できます。</div>
+      </div>
+      <div class="bot-action">詳しく見る →</div>
+    </a>
+  </div>
+
   <!-- フッター -->
   <footer class="foot">
     <div class="foot-left">運営：猫奈 @n_ekona</div>
     <div class="foot-links">
       <a class="foot-link" href="https://nekona.jp/" target="_blank">nekona.jp</a>
       <a class="foot-link" href="https://discord.gg/DtBGGNVRYz" target="_blank">Discord</a>
-      <a class="foot-link" href="https://nekona.jp/d" target="_blank">nekona.jp/d</a>
       <a class="foot-link" href="https://nekona.jp/d-bot" target="_blank">制作BOT</a>
     </div>
   </footer>
