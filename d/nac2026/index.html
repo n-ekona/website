@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>NAC創作祭2026 — イベント情報 | nekoNA Circle</title>
+<meta name="description" content="NekoNA Circle β 開催中のイベント「NAC創作祭2026」。映像・楽曲・絵・アプリの創作を持ち寄る祭典。ポイント上位3名にDiscord Nitroをプレゼント。">
+<meta name="theme-color" content="#0B0A08">
+<meta name="color-scheme" content="dark">
+<meta property="og:type" content="website">
+<meta property="og:title" content="NAC創作祭2026 — イベント情報">
+<meta property="og:description" content="映像・楽曲・絵・アプリの創作を持ち寄る祭典。ポイント上位3名にDiscord Nitroをプレゼント。">
+<meta property="og:url" content="https://nekona.jp/d/nac2026">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:site" content="@n_ekona">
+<link rel="icon" href="../../portfolio/assets/img/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400&family=Noto+Serif+JP:wght@300;400&display=swap" rel="stylesheet">
+<style>
+*{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --ink:#f0ece4;
+  --ink2:#c8c2b8;
+  --ink3:#8a8278;
+  --rule:rgba(255,255,255,0.14);
+  --glass:rgba(8,6,4,0.62);
+  --glass2:rgba(8,6,4,0.48);
+}
+html,body{
+  width:100%;min-height:100vh;
+  font-family:'Noto Sans JP',sans-serif;
+  color:var(--ink);
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+  cursor:none;
+}
+
+/* ── 背景 ── */
+.bg-layer{
+  position:fixed;inset:0;z-index:0;
+  background-size:cover;background-position:center;
+  opacity:0;transition:opacity 1.6s ease;
+  filter:blur(6px) brightness(0.70);
+  transform:scale(1.04);
+}
+.bg-layer.active{opacity:1}
+.bg-overlay{
+  position:fixed;inset:0;z-index:1;
+  background:linear-gradient(to bottom,
+    rgba(2,1,1,0.54) 0%,
+    rgba(2,1,1,0.18) 45%,
+    rgba(2,1,1,0.60) 100%);
+}
+
+/* ── カーソル ── */
+#cursor{
+  position:fixed;pointer-events:none;z-index:9999;
+  width:10px;height:10px;margin:-5px 0 0 -5px;
+  border-radius:50%;
+  background:rgba(255,255,255,0.85);
+  box-shadow:0 0 6px rgba(255,255,255,0.5);
+  mix-blend-mode:difference;
+}
+
+/* ── 花びら ── */
+.petal{
+  position:fixed;pointer-events:none;z-index:9998;
+  border-radius:80% 0 80% 0;
+  animation:petalFall linear forwards;
+}
+@keyframes petalFall{
+  0%  {transform:translate(0,0) rotate(0deg) scale(1);opacity:.88}
+  100%{transform:translate(var(--dx),var(--dy)) rotate(var(--dr)) scale(.28);opacity:0}
+}
+
+/* ── ローディング ── */
+.loader{
+  position:fixed;inset:0;z-index:10000;
+  display:flex;align-items:center;justify-content:center;
+  background:#0B0A08;cursor:none;
+  transition:opacity .8s ease,visibility .8s ease;
+}
+.loader.done{opacity:0;visibility:hidden}
+.loader-inner{display:flex;flex-direction:column;align-items:center;gap:20px}
+.loader-mark{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:21px;letter-spacing:.42em;padding-left:.42em;
+  color:var(--ink);opacity:.92;
+}
+.loader-bar{
+  position:relative;width:118px;height:2px;border-radius:2px;
+  background:rgba(255,255,255,.12);overflow:hidden;
+}
+.loader-bar i{
+  position:absolute;top:0;left:-40%;height:100%;width:40%;
+  background:linear-gradient(90deg,transparent,rgba(255,255,255,.72),transparent);
+  animation:loaderSlide 1.15s ease-in-out infinite;
+}
+@keyframes loaderSlide{0%{left:-42%}100%{left:100%}}
+
+/* ── ページ ── */
+.page{
+  position:relative;z-index:2;
+  max-width:720px;margin:0 auto;
+  padding:0 0 80px;
+}
+
+/* ── ヘッダー ── */
+.topbar{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:20px 36px 18px;
+  border-bottom:0.5px solid var(--rule);
+  background:var(--glass);
+  backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  position:sticky;top:0;z-index:10;
+}
+.brand{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:13px;letter-spacing:0.18em;
+  color:var(--ink2);text-decoration:none;transition:color .2s;
+}
+.brand:hover{color:var(--ink)}
+.nav{display:flex;align-items:center;gap:18px}
+.nav a{
+  display:inline-flex;align-items:center;gap:5px;
+  font-size:11px;letter-spacing:0.1em;
+  color:var(--ink2);text-decoration:none;transition:color .2s;
+}
+.nav a:hover{color:var(--ink)}
+.nav a svg{width:13px;height:13px;flex-shrink:0}
+.vr{width:0.5px;height:14px;background:var(--rule)}
+
+/* ── ヒーロー ── */
+.hero{padding:88px 36px 68px}
+.back-link{margin-bottom:18px}
+.back-link a{font-size:11px;letter-spacing:0.08em;color:var(--ink3);text-decoration:none;transition:color .2s}
+.back-link a:hover{color:var(--ink2)}
+.hero-eyebrow{
+  font-size:10px;letter-spacing:0.28em;
+  color:var(--ink3);margin-bottom:22px;
+}
+.hero-title{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:clamp(22px,4.5vw,32px);
+  letter-spacing:0.06em;line-height:1.65;
+  color:var(--ink);margin-bottom:16px;
+  text-shadow:0 2px 20px rgba(0,0,0,0.6);
+}
+.hero-title em{font-style:normal;color:var(--ink2);font-size:0.62em}
+.hero-sub{
+  font-size:13px;letter-spacing:0.05em;
+  color:var(--ink);line-height:2.1;max-width:420px;
+  text-shadow:0 1px 12px rgba(0,0,0,0.85);
+}
+.join-btn{
+  display:inline-flex;align-items:center;gap:9px;
+  margin-top:36px;padding:12px 26px;
+  border:0.5px solid rgba(88,101,242,0.45);
+  background:rgba(88,101,242,0.12);
+  backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  font-size:12.5px;letter-spacing:0.12em;
+  color:var(--ink);text-decoration:none;
+  font-family:'Noto Sans JP',sans-serif;
+  transition:border-color .25s,color .25s,background .25s;
+}
+.join-btn:hover{
+  border-color:rgba(88,101,242,0.85);
+  color:#b0b8ff;background:rgba(88,101,242,0.20);
+}
+.join-btn svg{width:15px;height:15px;fill:currentColor;flex-shrink:0}
+.join-url{margin-top:11px;font-size:10px;letter-spacing:0.1em;color:var(--ink3)}
+.hashtag-note{margin-top:6px;font-size:10px;letter-spacing:0.1em;color:var(--ink3)}
+.deadline-note{
+  display:inline-block;margin-top:16px;padding:7px 16px;
+  font-size:11px;letter-spacing:0.08em;color:var(--ink2);
+  border:0.5px solid var(--rule);background:rgba(255,255,255,0.04);
+}
+
+/* ── 情報セクション（概要・提出・FAQ 共通） ── */
+.info-wrap{
+  margin:0 36px;
+  border:0.5px solid var(--rule);
+  background:var(--glass2);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.info-wrap+.info-wrap,.point-section,.info-wrap+.point-section,.point-section+.info-wrap{margin-top:28px}
+.info-head{padding:22px 28px 18px;border-bottom:0.5px solid var(--rule)}
+.info-eyebrow{font-size:10px;letter-spacing:0.22em;color:var(--ink3);margin-bottom:7px}
+.info-heading{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:15px;letter-spacing:0.08em;color:var(--ink);line-height:1.6;
+}
+.info-meta{font-size:10px;letter-spacing:0.06em;color:var(--ink3);margin-top:8px}
+.article{padding:22px 28px;border-bottom:0.5px solid var(--rule)}
+.article:last-child{border-bottom:none}
+.article-no{font-size:10px;letter-spacing:0.14em;color:var(--ink3);margin-bottom:9px}
+.article-title{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:14px;letter-spacing:0.06em;color:var(--ink);
+  line-height:1.6;margin-bottom:12px;
+}
+.article-body{font-size:12.5px;color:var(--ink2);line-height:2.0;letter-spacing:0.03em}
+.article-body p{margin:0 0 .7em}.article-body p:last-child{margin-bottom:0}
+.article-body ul{margin:.2em 0 .4em 1.2em;padding:0}
+.article-body li{margin:0 0 .4em}
+.article-body strong{color:var(--ink);font-weight:400}
+
+/* ── 審査員 ── */
+.judge-list{list-style:none;margin:14px 0 0;padding:0;display:flex;flex-direction:column;gap:16px}
+.judge{display:flex;align-items:flex-start;gap:14px}
+.judge-icon{
+  width:44px;height:44px;border-radius:50%;flex-shrink:0;
+  object-fit:cover;object-position:center;
+  border:0.5px solid var(--rule);
+  background:rgba(255,255,255,0.04);
+  filter:saturate(.88) contrast(1.02);
+}
+.judge-icon.placeholder{
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Noto Serif JP',serif;font-size:11px;letter-spacing:.04em;
+  color:var(--ink3);
+}
+.judge-info{flex:1;min-width:0;padding-top:2px}
+.judge-name{
+  display:flex;align-items:center;flex-wrap:wrap;gap:8px;
+  font-size:12.5px;letter-spacing:.04em;color:var(--ink);margin-bottom:5px;
+}
+.judge-link{font-size:10.5px;color:var(--ink3);text-decoration:none;letter-spacing:.03em;transition:color .2s}
+.judge-link:hover{color:var(--ink2)}
+.judge-desc{font-size:11.5px;color:var(--ink2);line-height:1.7;letter-spacing:.03em}
+
+/* ── ポイント / 景品 ── */
+.point-section{
+  margin:28px 36px 0;
+  border:0.5px solid var(--rule);
+  background:var(--glass2);
+  backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+}
+.point-head{padding:18px 28px 14px;border-bottom:0.5px solid var(--rule)}
+.point-eyebrow{font-size:10px;letter-spacing:0.22em;color:var(--ink3);margin-bottom:6px}
+.point-title{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:13px;letter-spacing:0.06em;color:var(--ink);line-height:1.6;
+}
+.point-lead{font-size:11.5px;color:var(--ink2);line-height:1.8;margin-top:8px}
+.point-grid{display:grid;grid-template-columns:1fr 1fr 1fr}
+.point-item{
+  padding:18px 20px;
+  border-right:0.5px solid var(--rule);
+  border-bottom:0.5px solid var(--rule);
+}
+.point-item:last-child{border-right:none}
+.point-name{font-size:11.5px;letter-spacing:0.04em;color:var(--ink);margin-bottom:6px}
+.point-desc{font-size:11px;letter-spacing:0.03em;color:var(--ink2);line-height:1.7}
+.point-note{padding:14px 20px;font-size:10.5px;color:var(--ink3);letter-spacing:0.03em;line-height:1.7}
+
+/* ── フッター ── */
+.foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin:28px 36px 0;padding-top:22px;
+  border-top:0.5px solid var(--rule);
+}
+.foot-left{
+  font-family:'Noto Serif JP',serif;font-weight:300;
+  font-size:10px;letter-spacing:0.14em;color:var(--ink3);
+}
+.foot-links{display:flex;gap:20px}
+.foot-link{
+  font-size:10px;letter-spacing:0.1em;
+  color:var(--ink3);text-decoration:none;transition:color .2s;
+}
+.foot-link:hover{color:var(--ink)}
+
+/* ── 背景ドット ── */
+.bg-dots{
+  position:fixed;bottom:22px;right:26px;z-index:10;
+  display:flex;gap:7px;align-items:center;
+}
+.bg-dot{
+  width:5px;height:5px;border-radius:50%;
+  background:rgba(255,255,255,0.18);
+  border:0.5px solid rgba(255,255,255,0.28);
+  cursor:none;transition:background .3s,transform .2s;
+}
+.bg-dot.active{background:rgba(255,255,255,0.80);transform:scale(1.2)}
+
+/* ── レスポンシブ ── */
+@media (max-width:560px){
+  .hero{padding:64px 22px 52px}
+  .topbar{padding:16px 20px 14px}
+  .info-wrap,.point-section,.foot{margin-left:20px;margin-right:20px}
+  .article{padding:20px 22px}
+  .point-grid{grid-template-columns:1fr}
+  .point-item{border-right:none}
+}
+@media (hover:none),(pointer:coarse){
+  html,body{cursor:auto}
+  #cursor{display:none}
+}
+@media (prefers-reduced-motion:reduce){
+  *{animation-duration:.001ms!important;animation-iteration-count:1!important;transition-duration:.001ms!important}
+  /* 花びら・ローダーは reduced-motion でも動かす（ユーザー要望） */
+  .petal{animation-duration:var(--pdur,1500ms)!important;animation-iteration-count:1!important}
+  .loader{transition-duration:.8s!important}
+  .loader-bar i{animation-duration:1.15s!important;animation-iteration-count:infinite!important}
+}
+</style>
+</head>
+<body>
+
+<!-- ローディング -->
+<div id="loader" class="loader">
+  <div class="loader-inner">
+    <span class="loader-mark">nekoNA</span>
+    <span class="loader-bar"><i></i></span>
+  </div>
+</div>
+
+<div id="cursor"></div>
+
+<div id="bgA" class="bg-layer active"  style="background-image:url('../images/bg1.png')"></div>
+<div id="bgB" class="bg-layer"         style="background-image:url('../images/bg2.png')"></div>
+<div class="bg-overlay"></div>
+
+<div class="bg-dots">
+  <div class="bg-dot active" onclick="jumpTo(0)"></div>
+  <div class="bg-dot"        onclick="jumpTo(1)"></div>
+  <div class="bg-dot"        onclick="jumpTo(2)"></div>
+  <div class="bg-dot"        onclick="jumpTo(3)"></div>
+</div>
+
+<div class="page">
+
+  <!-- ヘッダー -->
+  <header class="topbar">
+    <a class="brand" href="https://nekona.jp/" target="_blank">nekoNA EVENT</a>
+    <nav class="nav">
+      <a href="https://nekona.jp/" target="_blank">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+          <path d="M3 12L12 3l9 9"/><path d="M9 21V12h6v9"/>
+        </svg>Home
+      </a>
+      <div class="vr"></div>
+      <a href="https://nekona.jp/d" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.103.132 18.117a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+        Discord
+      </a>
+      <div class="vr"></div>
+      <a href="https://x.com/n_ekona" target="_blank">
+        <svg viewBox="0 0 24 24" fill="currentColor"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.748l7.73-8.835L1.254 2.25H8.08l4.253 5.622 5.911-5.622zm-1.161 17.52h1.833L7.084 4.126H5.117z"/></svg>
+        X
+      </a>
+    </nav>
+  </header>
+
+  <!-- ヒーロー -->
+  <section class="hero">
+    <p class="back-link"><a href="https://nekona.jp/d/event">← イベント一覧</a></p>
+    <p class="hero-eyebrow">NEKONA CIRCLE β — EVENT INFO</p>
+    <h1 class="hero-title">
+      NAC創作祭 2026<br>
+      <em>映像・楽曲・絵・アプリを持ち寄る創作の祭典</em>
+    </h1>
+    <p class="hero-sub">
+      ジャンルを問わず、あなたの創作物を投稿しよう。<br>
+      ポイント上位3名には、Discord Nitroをプレゼントします。<br>
+      参加方法・ルールは下記をご確認ください。
+    </p>
+    <a class="join-btn" href="https://discord.gg/DtBGGNVRYz" target="_blank">
+      <svg viewBox="0 0 24 24"><path d="M20.317 4.37a19.791 19.791 0 0 0-4.885-1.515.074.074 0 0 0-.079.037c-.21.375-.444.864-.608 1.25a18.27 18.27 0 0 0-5.487 0 12.64 12.64 0 0 0-.617-1.25.077.077 0 0 0-.079-.037A19.736 19.736 0 0 0 3.677 4.37a.07.07 0 0 0-.032.027C.533 9.046-.32 13.58.099 18.057.1 18.08.114 18.103.132 18.117a19.9 19.9 0 0 0 5.993 3.03.078.078 0 0 0 .084-.028c.462-.63.874-1.295 1.226-1.994a.076.076 0 0 0-.041-.106 13.107 13.107 0 0 1-1.872-.892.077.077 0 0 1-.008-.128 10.2 10.2 0 0 0 .372-.292.074.074 0 0 1 .077-.01c3.928 1.793 8.18 1.793 12.062 0a.074.074 0 0 1 .078.01c.12.098.246.198.373.292a.077.077 0 0 1-.006.127 12.299 12.299 0 0 1-1.873.892.077.077 0 0 0-.041.107c.36.698.772 1.362 1.225 1.993a.076.076 0 0 0 .084.028 19.839 19.839 0 0 0 6.002-3.03.077.077 0 0 0 .032-.054c.5-5.177-.838-9.674-3.549-13.66a.061.061 0 0 0-.031-.03z"/></svg>
+      Discord で参加する
+    </a>
+    <div class="join-url">discord.gg/DtBGGNVRYz</div>
+    <div class="hashtag-note">ハッシュタグ：#NAC創作祭2026</div>
+    <div class="deadline-note">提出期限：2026年8月10日（月）22:00（JST）</div>
+  </section>
+
+  <!-- イベント詳細 -->
+  <div class="info-wrap">
+    <div class="info-head">
+      <div class="info-eyebrow">EVENT DETAILS</div>
+      <div class="info-heading">NAC創作祭2026 — イベント詳細</div>
+      <div class="info-meta">最終更新：2026年7月5日</div>
+    </div>
+
+    <div class="article">
+      <div class="article-no">01</div>
+      <div class="article-title">創作祭とは</div>
+      <div class="article-body">
+        <p>映像・楽曲・絵・アプリケーション——ジャンルを問わず、あなたの創作物を持ち寄るお祭りです。</p>
+        <p>イベントに参加してポイントを集めると、上位3名にDiscord Nitroをプレゼントします（ポイントの計算方法は後述）。</p>
+        <p>期間中には関連イベントも開催予定です。詳細はサーバー内のカレンダーで随時ご案内します。</p>
+      </div>
+    </div>
+
+    <div class="article">
+      <div class="article-no">02</div>
+      <div class="article-title">提出できる創作物</div>
+      <div class="article-body">
+        <ul>
+          <li>映像（15秒以上15分以内の動画）</li>
+          <li>曲（15秒以上15分以内の楽曲）</li>
+          <li>アプリケーション（ゲームなどを含む広義のアプリ。<strong>バイブコーディング不可</strong>。GitHubのリンクで提出し、PCに危険を及ぼすウイルス等を含まないものに限ります）</li>
+          <li>絵（イラスト）——このジャンルのみ<strong>3作品まで</strong>提出可能</li>
+        </ul>
+        <p>絵を除くジャンルは、1人1ジャンルにつき1作品までの提出となります。</p>
+      </div>
+    </div>
+
+    <div class="article">
+      <div class="article-no">03</div>
+      <div class="article-title">提出方法</div>
+      <div class="article-body">
+        <p>サーバー内の投稿用チャンネルに、新規スレッドとして作品を提出してください。提出の際は、作品の内容に合ったタグを指定してください。</p>
+      </div>
+    </div>
+
+    <div class="article">
+      <div class="article-no">04</div>
+      <div class="article-title">提出期限</div>
+      <div class="article-body">
+        <p>提出はイベント期間中いつでも可能です。締切は<strong>2026年8月10日（月）22:00（日本時間）</strong>です。</p>
+      </div>
+    </div>
+
+    <div class="article">
+      <div class="article-no">05</div>
+      <div class="article-title">審査員紹介</div>
+      <div class="article-body">
+        <p>提出された創作物は、以下の4名の審査員が評価します。</p>
+        <ul class="judge-list">
+          <li class="judge">
+            <img class="judge-icon" src="../images/judges/nekona.jpg" alt="nekoNA" loading="lazy">
+            <div class="judge-info">
+              <div class="judge-name">nekoNA（私）<a class="judge-link" href="https://x.com/n_ekona" target="_blank">@n_ekona</a></div>
+              <div class="judge-desc">nekoNA Circle 主催者。</div>
+            </div>
+          </li>
+          <li class="judge">
+            <div class="judge-icon placeholder" aria-hidden="true">KS</div>
+            <div class="judge-info">
+              <div class="judge-name">KSさん</div>
+              <div class="judge-desc">nekoNA鯖の鯖主補佐。景品のDiscord Nitro（通常版）3つのうち2つを提供してくれました。</div>
+            </div>
+          </li>
+          <li class="judge">
+            <img class="judge-icon" src="../images/judges/deltav.jpg" alt="delta v" loading="lazy">
+            <div class="judge-info">
+              <div class="judge-name">delta vさん<a class="judge-link" href="https://x.com/gonhty" target="_blank">@gonhty</a></div>
+              <div class="judge-desc">MV・ライブ・ショート動画の制作とディレクションを専門とする映像クリエイター。</div>
+            </div>
+          </li>
+          <li class="judge">
+            <img class="judge-icon" src="../images/judges/webmania.jpg" alt="ウェブマニア" loading="lazy">
+            <div class="judge-info">
+              <div class="judge-name">ウェブマニアさん<a class="judge-link" href="https://x.com/webmaniasns" target="_blank">@webmaniasns</a></div>
+              <div class="judge-desc">YouTubeを中心に、ネットライフを便利にする情報を発信。ゲーム開発も手がける。</div>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ポイント / 景品 -->
+  <div class="point-section">
+    <div class="point-head">
+      <div class="point-eyebrow">POINTS &amp; PRIZE</div>
+      <div class="point-title">ポイントと景品</div>
+      <div class="point-lead">ポイント上位3名にDiscord Nitroをプレゼントします。ポイントは次の3つの合計で算出されます。</div>
+    </div>
+    <div class="point-grid">
+      <div class="point-item">
+        <div class="point-name">創作物の評価（60%）</div>
+        <div class="point-desc">審査員4名による評価。最大50ptまで。</div>
+      </div>
+      <div class="point-item">
+        <div class="point-name">発言数（20%）</div>
+        <div class="point-desc">創作系テキストチャンネルでのメッセージ数（雑談を含む）。</div>
+      </div>
+      <div class="point-item">
+        <div class="point-name">VCアクティブ時間（20%）</div>
+        <div class="point-desc">ボイスチャンネルでの参加時間。</div>
+      </div>
+    </div>
+    <div class="point-note">発言数・VCアクティブ時間のランキングは、サーバー内のコマンドでいつでも確認できます。</div>
+  </div>
+
+  <!-- よくある質問 -->
+  <div class="info-wrap">
+    <div class="info-head">
+      <div class="info-eyebrow">FAQ</div>
+      <div class="info-heading">よくある質問</div>
+    </div>
+
+    <div class="article">
+      <div class="article-title">提出できる創作物以外のもの（文章作品など）は提出できますか？</div>
+      <div class="article-body"><p>提出できません。</p></div>
+    </div>
+    <div class="article">
+      <div class="article-title">背景や制作等にAIの利用は可能ですか？</div>
+      <div class="article-body"><p>作品全体のAI生成はご遠慮ください。AIを一部使用することは可能ですが、使用したことを明記してください。</p></div>
+    </div>
+    <div class="article">
+      <div class="article-title">ハッシュタグを教えてください</div>
+      <div class="article-body"><p><strong>#NAC創作祭2026</strong></p></div>
+    </div>
+    <div class="article">
+      <div class="article-title">アプリケーションにWebサイトは含まれますか？</div>
+      <div class="article-body"><p>含まれます。ほかにも、アプリケーション（広義）に当てはまるかどうかのご質問もお気軽にお寄せください。</p></div>
+    </div>
+    <div class="article">
+      <div class="article-title">提出は他ジャンルにも可能ですか？</div>
+      <div class="article-body"><p>いいえ、1ジャンルまでとさせていただいております。絵（イラスト）以外のジャンルで提出しない場合は、原則1作品までとなります。</p></div>
+    </div>
+    <div class="article">
+      <div class="article-title">二次創作の作品は投稿できますか？</div>
+      <div class="article-body"><p>可能です。</p></div>
+    </div>
+  </div>
+
+  <!-- フッター -->
+  <footer class="foot">
+    <div class="foot-left">運営：猫奈 @n_ekona</div>
+    <div class="foot-links">
+      <a class="foot-link" href="https://nekona.jp/" target="_blank">nekona.jp</a>
+      <a class="foot-link" href="https://nekona.jp/d/event" target="_blank">イベント一覧</a>
+      <a class="foot-link" href="https://discord.gg/DtBGGNVRYz" target="_blank">Discord</a>
+    </div>
+  </footer>
+
+</div>
+
+<script>
+/* ══════════════════════════════
+   背景スライダー
+══════════════════════════════ */
+const IMAGES = ['../images/bg1.png','../images/bg2.png','../images/bg3.png','../images/bg4.png'];
+const bgA = document.getElementById('bgA');
+const bgB = document.getElementById('bgB');
+const dots = document.querySelectorAll('.bg-dot');
+let bgCur=0, useA=true, bgTimer=null;
+
+function updateDots(i){ dots.forEach((d,idx)=>d.classList.toggle('active',idx===i)); }
+function switchBg(n){
+  if(n===bgCur) return;
+  const back = useA ? bgB : bgA;
+  const front= useA ? bgA : bgB;
+  back.style.backgroundImage=`url('${IMAGES[n]}')`;
+  back.classList.add('active');
+  front.classList.remove('active');
+  useA=!useA; bgCur=n; updateDots(n);
+}
+function jumpTo(i){ clearInterval(bgTimer); switchBg(i); startBgTimer(); }
+function startBgTimer(){ bgTimer=setInterval(()=>switchBg((bgCur+1)%IMAGES.length),8000); }
+const si=Math.floor(Math.random()*IMAGES.length);
+bgA.style.backgroundImage=`url('${IMAGES[si]}')`;
+bgCur=si; updateDots(si);
+startBgTimer();
+
+/* ══════════════════════════════
+   カーソル
+══════════════════════════════ */
+const cursor=document.getElementById('cursor');
+let mx=0,my=0;
+document.addEventListener('mousemove',e=>{
+  mx=e.clientX; my=e.clientY;
+  cursor.style.left=mx+'px';
+  cursor.style.top=my+'px';
+});
+
+/* ══════════════════════════════
+   花びら
+══════════════════════════════ */
+const PETAL_COLORS=[
+  'rgba(120,200,240,0.80)','rgba(88,101,242,0.74)',
+  'rgba(55,214,240,0.78)','rgba(176,184,255,0.74)',
+  'rgba(150,180,230,0.80)','rgba(120,160,230,0.70)',
+];
+let lastPetal=0;
+function spawnPetal(){
+  const now=Date.now();
+  if(now-lastPetal<60) return;
+  lastPetal=now;
+  const el=document.createElement('div');
+  el.className='petal';
+  const size=7+Math.random()*8;
+  const color=PETAL_COLORS[Math.floor(Math.random()*PETAL_COLORS.length)];
+  const dur=900+Math.random()*700;
+  const dx=(Math.random()-.5)*80;
+  const dy=60+Math.random()*60;
+  const dr=(Math.random()-.5)*360+'deg';
+  el.style.cssText=`left:${mx}px;top:${my}px;width:${size}px;height:${size*.65}px;background:${color};--dx:${dx}px;--dy:${dy}px;--dr:${dr};--pdur:${dur}ms;animation-duration:${dur}ms;margin:${-size/2}px 0 0 ${-size/2}px;filter:blur(0.4px);`;
+  document.body.appendChild(el);
+  el.addEventListener('animationend',()=>el.remove());
+}
+/* 花びらは reduced-motion でも常に舞わせる（ユーザー要望） */
+document.addEventListener('mousemove',spawnPetal);
+document.addEventListener('touchmove',e=>{const t=e.touches[0];if(t){mx=t.clientX;my=t.clientY;spawnPetal();}},{passive:true});
+/* ══════════════════════════════
+   ローディング
+══════════════════════════════ */
+(function(){
+  const l=document.getElementById('loader'); if(!l) return;
+  let hidden=false;
+  function hide(){ if(hidden) return; hidden=true; l.classList.add('done'); setTimeout(()=>l.remove(),900); }
+  const first=new Image(); first.onload=()=>setTimeout(hide,250); first.onerror=hide; first.src=IMAGES[0];
+  window.addEventListener('load',()=>setTimeout(hide,250));
+  setTimeout(hide,4000); /* フォールバック */
+})();
+
+/* 装飾SVGをスクリーンリーダーから隠す */
+document.querySelectorAll('svg').forEach(function(s){
+  if(!s.getAttribute('aria-label')){ s.setAttribute('aria-hidden','true'); s.setAttribute('focusable','false'); }
+});
+</script>
+</body>
+</html>
