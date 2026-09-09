@@ -435,6 +435,16 @@ body.has-cursor a,body.has-cursor button{cursor:none}
 .skill-tools{list-style:none;display:flex;flex-wrap:wrap;gap:8px}
 .skill-tools li{font-size:11.5px;color:var(--ink-2);padding:5px 12px;border:0.5px solid var(--rule);border-radius:8px;background:rgba(240,236,228,.02)}
 
+/* ---------- Achievements ---------- */
+.achievements-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.achievement-card{position:relative;min-height:210px;padding:26px 28px;border:0.5px solid var(--rule);border-radius:var(--radius);background:var(--glass-2);overflow:hidden;transition:border-color .3s,transform .3s}
+.achievement-card::after{content:'';position:absolute;right:-34px;bottom:-34px;width:116px;height:116px;border:1px solid rgba(110,123,240,.2);border-radius:50%;box-shadow:0 0 0 16px rgba(110,123,240,.04)}
+.achievement-card:hover{border-color:var(--rule-2);transform:translateY(-3px)}
+.achievement-kind{font-size:10.5px;letter-spacing:.18em;color:var(--accent-soft);margin-bottom:26px}
+.achievement-date{display:block;font-size:12px;letter-spacing:.08em;color:var(--ink-3);margin-bottom:9px}
+.achievement-title{position:relative;z-index:1;font-family:'Noto Serif JP',serif;font-size:clamp(18px,2vw,23px);font-weight:400;letter-spacing:.04em;line-height:1.55}
+.achievement-detail{position:relative;z-index:1;margin-top:9px;color:var(--ink-2);font-size:13px;line-height:1.75}
+
 /* ---------- Contact ---------- */
 .contact-wrap{display:grid;grid-template-columns:1.4fr .9fr;gap:clamp(20px,3vw,40px);align-items:start}
 .contact-label{font-family:'Noto Sans JP',system-ui,sans-serif;font-size:10.5px;letter-spacing:.2em;color:var(--ink-3);margin-bottom:14px}
@@ -521,6 +531,7 @@ body.has-cursor a,body.has-cursor button{cursor:none}
   .flow{grid-template-columns:1fr 1fr}
   .flow-step{border-right:0.5px solid var(--rule)!important;border-radius:0!important}
   .flow-step::after{display:none}
+  .achievements-grid{grid-template-columns:1fr}
   .contact-wrap{grid-template-columns:1fr}
 }
 @media (max-width:600px){
