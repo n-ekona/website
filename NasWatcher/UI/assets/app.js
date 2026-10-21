@@ -600,7 +600,7 @@ async function loadRelayInfo() {
     const el = $('relayResult');
     if (relayRunning) {
       el.className = 'muted ok';
-      el.textContent = `中継中: 接続 ${data.connections} 件` + (data.error ? ' / ' + data.error : '');
+      el.textContent = `中継中: 待受 ${data.gateway}:${data.port} → NAS ${data.nasIp}:${data.targetPort}  (接続 ${data.connections} 件)`;
     } else {
       el.className = 'muted';
       el.textContent = '停止中です。';
@@ -616,19 +616,18 @@ async function toggleRelay() {
   el.textContent = '処理中...';
 
   try {
-    const port = parseInt($('relayPort').value, 10) || 5000;
     const targetPort = parseInt($('relayTarget').value, 10) || 80;
 
     const data = relayRunning
       ? await call('relayStop')
-      : await call('relayStart', { port, targetPort });
+      : await call('relayStart', { targetPort });
 
     relayRunning = data.running === true;
     $('relayToggle').textContent = relayRunning ? 'リレーを停止' : 'リレーを開始';
     $('relayUrl').textContent = data.url || '—';
     el.className = 'muted ' + (relayRunning ? 'ok' : '');
     el.textContent = relayRunning
-      ? `中継を開始しました (${data.url})。管理者権限のダイアログが出たら許可してください。`
+      ? `中継を開始しました (待受ポート ${data.port} → NAS ${data.nasIp}:${data.targetPort})。` + (data.hint ? ' ' + data.hint : '')
       : 'リレーを停止しました。';
   } catch (err) {
     el.className = 'muted err';
@@ -657,6 +656,16 @@ function bind() {
   $('lanTest').onclick = () => testLan();
   $('lanToggle').onclick = () => toggleLan();
   $('relayToggle').onclick = () => toggleRelay();
+  $('copyRelayUrl').onclick = async () => {
+    const url = $('relayUrl').textContent;
+    if (!url || url === '—') return;
+    try {
+      await call('copy', { text: url });
+      toast('URL をコピーしました: ' + url, 'ok');
+    } catch (err) {
+      toast(err.message, 'err');
+    }
+  };
   $('closeSettings').onclick = () => $('settingsModal').classList.add('hidden');
   $('cancelSettings').onclick = () => $('settingsModal').classList.add('hidden');
   $('saveSettings').onclick = () => saveSettings();
@@ -669,13 +678,12 @@ function bind() {
 async function init() {
   bind();
   fillSelect($('webPort'), ['80', '443', '5000', '5001', '8080'].map((v) => ({ value: v, text: v })), '5000');
-  fillSelect($('relayPort'), ['5000', '8080', '8000', '9000', '6000'].map((v) => ({ value: v, text: 'ポート ' + v })), '5000');
   fillSelect($('relayTarget'), [
-    { value: '80', text: 'Web (80)' },
-    { value: '443', text: 'Web (443)' },
+    { value: '80', text: 'NAS の Web (80)' },
+    { value: '443', text: 'NAS の Web (443)' },
+    { value: '5000', text: 'NAS の Web (5000)' },
+    { value: '5001', text: 'NAS の Web (5001)' },
     { value: '445', text: 'SMB (445)' },
-    { value: '5000', text: 'Web (5000)' },
-    { value: '5001', text: 'Web (5001)' },
   ], '80');
   await loadAdapters();
   updateSmbPath();

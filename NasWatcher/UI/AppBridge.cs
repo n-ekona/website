@@ -75,7 +75,7 @@ internal sealed class AppBridge : IDisposable
             case "lanTest": return await TestLanAsync(GetString(payload, "ip"), GetInt(payload, "port", 445));
             case "lanEnable": return EnableLanAccess();
             case "lanDisable": return DisableLanAccess();
-            case "relayStart": return StartRelay(GetInt(payload, "port", 5000), GetInt(payload, "targetPort", 80));
+            case "relayStart": return StartRelay(GetInt(payload, "targetPort", 80));
             case "relayStop": return StopRelay();
             case "relayStatus": return BuildRelayInfo();
             default:
@@ -85,26 +85,53 @@ internal sealed class AppBridge : IDisposable
 
     // -------------------------------------------------------------- TCP リレー
 
-    private JsonNode StartRelay(int listenPort, int targetPort)
+    private JsonNode StartRelay(int targetPort)
     {
         var adapter = _lan.FindHotspotAdapter();
         var nasIp = _host?.Ip ?? _settings.NasIp;
         if (adapter is null) throw new InvalidOperationException("モバイルホットスポットが ON ではありません。");
         if (string.IsNullOrEmpty(nasIp)) throw new InvalidOperationException("NAS が選択されていません。");
 
-        // Web ポートは HTTP プロキシ (リダイレクトとリンクを書き換える)、その他は RAW 中継
-        if (targetPort is 80 or 5000 or 5001)
+        // 待ち受けポートは「転送先と同じポート」を優先し、空いていなければ自動で選ぶ
+        // (iPhone のブラウザはポート指定ができるため、 NAS 側と同一のポートが扱いやすい)
+        var candidates = new List<int> { targetPort };
+        candidates.AddRange(new[] { 8080, 9000, 6000, 5050, 7000, 4500, 4440, 4450 });
+        candidates = candidates.Distinct().ToList();
+
+        string? lastError = null;
+        var started = false;
+
+        foreach (var port in candidates)
         {
-            _relay.Stop();
-            _proxy.Start(adapter.Address.ToString(), listenPort, nasIp, targetPort);
-        }
-        else
-        {
-            _proxy.Stop();
-            _relay.Start(adapter.Address.ToString(), listenPort, nasIp, targetPort);
+            try
+            {
+                if (targetPort is 80 or 5000 or 5001)
+                {
+                    _relay.Stop();
+                    _proxy.Start(adapter.Address.ToString(), port, nasIp, targetPort);
+                }
+                else
+                {
+                    _proxy.Stop();
+                    _relay.Start(adapter.Address.ToString(), port, nasIp, targetPort);
+                }
+
+                started = true;
+                break;
+            }
+            catch (Exception ex)
+            {
+                lastError = ex.Message;
+            }
         }
 
         var info = BuildRelayInfo();
+
+        if (!started)
+        {
+            throw new InvalidOperationException($"リレーの待受ポートを確保できませんでした: {lastError}");
+        }
+
         if (!_lan.IsLanAccessEnabled())
         {
             info["hint"] = "iPhone からの接続をブロックしている可能性があります。［LAN アクセスを許可］を押してファイアウォール ルールを追加してください (管理者権限が必要です)。";

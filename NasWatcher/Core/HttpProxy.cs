@@ -179,7 +179,7 @@ public sealed class HttpProxy : IDisposable
         var (headText, bodyStart) = SplitHead(responseHead);
 
         // NAS 自身が HTTPS へリダイレクトする場合、代理側で取得して内容を返す
-        if (TryFollowRedirect(headText, targetHost, out var redirectUrl))
+        if (TryFollowRedirect(headText, targetHost, out var redirectUrl) && redirectUrl is not null)
         {
             await SendFetchedContentAsync(clientStream, redirectUrl, publicHost, publicPort, token).ConfigureAwait(false);
             return;
