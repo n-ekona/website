@@ -1,0 +1,47 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>WinExe</OutputType>
+    <TargetFramework>net10.0-windows10.0.19041.0</TargetFramework>
+    <UseWindowsForms>true</UseWindowsForms>
+    <Nullable>enable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <SupportedOSPlatformVersion>10.0.19041.0</SupportedOSPlatformVersion>
+    <ApplicationManifest>app.manifest</ApplicationManifest>
+    <ApplicationDefaultFont>Yu Gothic UI, 9pt</ApplicationDefaultFont>
+    <AssemblyName>NasWatcher</AssemblyName>
+    <RootNamespace>NasWatcher</RootNamespace>
+    <Product>NAS WATCH</Product>
+    <AssemblyTitle>NAS WATCH</AssemblyTitle>
+    <Description>イーサーネットから NAS の IP を取得し、容量・通信速度・モバイルホットスポット・SMB パスを管理するツール</Description>
+    <Version>1.0.0</Version>
+    <Company>NasWatcher</Company>
+    <Product>NASWatcher</Product>
+  </PropertyGroup>
+
+  <!-- 単一 exe として publish するための設定 -->
+  <PropertyGroup>
+    <RuntimeIdentifier>win-x64</RuntimeIdentifier>
+    <SelfContained>true</SelfContained>
+    <PublishSingleFile>true</PublishSingleFile>
+    <IncludeNativeLibrariesForSelfExtract>true</IncludeNativeLibrariesForSelfExtract>
+    <EnableCompressionInSingleFile>true</EnableCompressionInSingleFile>
+    <DebugType>none</DebugType>
+    <SatelliteResourceLanguages>ja;en</SatelliteResourceLanguages>
+    <!-- app.manifest で DPI 対応を指定しているため (WFO0003) と WebView2 の WPF 依存 (MSB3277) は抑制する -->
+    <NoWarn>$(NoWarn);WFO0003</NoWarn>
+    <MSBuildWarningsAsMessages>MSB3277</MSBuildWarningsAsMessages>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Microsoft.Web.WebView2" Version="1.0.3537.50" />
+  </ItemGroup>
+
+  <!-- Web UI (HTML / CSS / JS) を exe に埋め込む -->
+  <ItemGroup>
+    <EmbeddedResource Include="UI\assets\index.html" LogicalName="ui.index.html" />
+    <EmbeddedResource Include="UI\assets\styles.css" LogicalName="ui.styles.css" />
+    <EmbeddedResource Include="UI\assets\app.js" LogicalName="ui.app.js" />
+  </ItemGroup>
+
+</Project>
