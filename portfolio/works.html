@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>個人開発 | NekoNA</title>
+<meta name="description" content="NekoNA(猫奈)の個人開発。デスクトップアプリ、Discordボットなど、GitHubで公開しているソフトウェアをタグで絞り込んで紹介します。">
+<meta name="theme-color" content="#fafdfe">
+<meta name="color-scheme" content="light">
+<link rel="canonical" href="https://nekona.jp/works.html">
+<link rel="icon" href="assets/img/favicon.svg" type="image/svg+xml">
+
+<meta property="og:type" content="website">
+<meta property="og:title" content="個人開発 | NekoNA">
+<meta property="og:description" content="デスクトップアプリ、Discordボットなど、GitHubで公開しているソフトウェアを紹介します。">
+<meta property="og:url" content="https://nekona.jp/works.html">
+<meta property="og:image" content="https://nekona.jp/assets/img/og.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@n_ekona">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@400;500;700&family=Noto+Serif+JP:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="assets/css/style.css?v=20261022">
+<script>
+  // テーマの初期適用(FOUC回避: 描画前に data-theme を設定)
+  (function () {
+    try {
+      var m = localStorage.getItem('theme') ||
+        (window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+      document.documentElement.setAttribute('data-theme', m);
+      var t = document.querySelector('meta[name="theme-color"]');
+      if (t) t.setAttribute('content', m === 'dark' ? '#0e1620' : '#fafdfe');
+    } catch (e) {}
+  })();
+</script>
+</head>
+<body>
+<a class="skip-link" href="#main">本文へスキップ</a>
+
+<!-- ───────── ヘッダー ───────── -->
+<header class="site-header">
+  <div class="container header-inner">
+    <a class="brand" href="index.html">NekoNA</a>
+    <div class="header-tools">
+    <nav class="site-nav" aria-label="セクション">
+      <a href="client-work.html">対応領域</a>
+      <a href="community.html">団体活動</a>
+      <a href="works.html" aria-current="page">個人開発</a>
+      <a href="creations.html">実績</a>
+      <a href="contact.html">お問い合わせ</a>
+    </nav>
+      <button type="button" class="theme-toggle" aria-pressed="false">
+        <svg class="ico-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+        <svg class="ico-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="4"/><path d="M12 2v2M12 20v2M4.93 4.93l1.41 1.41M17.66 17.66l1.41 1.41M2 12h2M20 12h2M6.34 17.66l-1.41 1.41M19.07 4.93l-1.41 1.41"/></svg>
+        <span class="theme-toggle-name">ダーク</span>
+      </button>
+    </div>
+  </div>
+</header>
+
+<main id="main">
+  <div class="container">
+
+    <!-- ───────── ページイントロ ───────── -->
+    <section class="page-intro">
+      <p class="label">PERSONAL / 個人開発</p>
+      <h1>個人開発</h1>
+      <p>デスクトップアプリ、Discordボット、動画編集ソフトのスクリプト、プラグインなど、個人で開発しているソフトウェアを紹介します。すべてGitHubで公開しています。</p>
+    </section>
+
+    <!-- ───────── 検索・絞り込み ───────── -->
+    <div class="search-tools">
+      <div class="search-row">
+        <div class="search-box">
+          <span class="search-ico" aria-hidden="true">⌕</span>
+          <input type="search" id="worksSearch" aria-label="タイトル・説明・タグを検索" placeholder="タイトル・説明・タグを検索" autocomplete="off">
+          <button type="button" class="search-clear" id="worksSearchClear" aria-label="検索をクリア" hidden>×</button>
+        </div>
+        <p class="search-count" id="worksCount" role="status" aria-live="polite"></p>
+      </div>
+      <div class="filter-tags" id="worksFilterTags" aria-label="タグで絞り込み">
+        <!-- JSがタグを生成 -->
+      </div>
+    </div>
+
+    <!-- ───────── プロジェクトリスト ───────── -->
+    <section class="section works-list" id="worksList" aria-label="個人開発の制作物">
+      <!-- JSが works.js のデータから生成 -->
+    </section>
+
+    <!-- ───────── 該当なし ───────── -->
+    <section class="empty-state" id="worksEmpty" hidden aria-label="該当する項目なし">
+      <h2>条件に合う項目がありません。</h2>
+      <p>検索語やタグを変更して、もう一度お試しください。</p>
+      <button type="button" class="btn btn-ghost" id="worksReset">条件をクリア</button>
+    </section>
+
+    <p class="works-more">
+      <a href="https://github.com/n-ekona" target="_blank" rel="noopener noreferrer">GitHubの全リポジトリを見る <span aria-hidden="true">↗</span></a>
+    </p>
+
+  </div>
+</main>
+
+<!-- ───────── フッター ───────── -->
+<footer class="site-footer">
+  <div class="container">
+    <div class="footer-inner">
+      <span class="footer-brand">NekoNA</span>
+      <nav class="footer-links" aria-label="フッターリンク">
+        <a href="https://nekona.jp/" target="_blank" rel="noopener">nekona.jp</a>
+        <a href="https://www.youtube.com/@n_ekona" target="_blank" rel="noopener">YouTube</a>
+        <a href="https://x.com/n_ekona" target="_blank" rel="noopener">X(仕事)</a>
+        <a href="https://x.com/nekolnu" target="_blank" rel="noopener">X(趣味)</a>
+        <a href="https://nekona.jp/d" target="_blank" rel="noopener">Discord</a>
+      </nav>
+    </div>
+    <p class="footer-copy mono">© <span id="year">2026</span> NekoNA. All rights reserved.</p>
+  </div>
+</footer>
+
+<script src="assets/js/bglines.js?v=20261021"></script>
+<script src="assets/js/bg3d.js?v=20261021"></script>
+<script src="assets/js/works.js"></script>
+<script src="assets/js/main.js"></script>
+<script src="assets/js/petals.js"></script>
+</body>
+</html>

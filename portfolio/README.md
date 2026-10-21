@@ -187,7 +187,7 @@ window.NEKONA_CONFIG = {
 ---
 
 ## メモ
-- アニメーションは `prefers-reduced-motion`(OSの「視差効果を減らす」)に対応し、自動で控えめになります。
+- 背景(WebGPU螺旋・縦線ノイズ)は常時アニメーションします。OSの「アニメーション効果」(`prefers-reduced-motion`)が有効でも停止しません(UIの出現アニメーションのみ控えめになります)。
 - カスタムカーソルはマウス環境のみ。タッチ端末では通常カーソルに戻ります。
 - **OGP画像**: SNS/Discord共有時のサムネは `assets/img/og.png`(1200×630)を作成して置いてください。未作成だと画像なしカードになります。各ページの `og:image` は絶対URL(`https://nekona.jp/...`)を指しています。公開ドメインが異なる場合は、その値と各ページの `canonical` / `og:url` も合わせて変更してください。
 - **(任意・上級者向け)** Supabase クライアントの CDN 読込はメジャー固定(`@supabase/supabase-js@2`)です。より堅牢にしたい場合は特定バージョン＋ `integrity`(SRI)＋`crossorigin` に固定できます。

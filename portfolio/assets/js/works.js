@@ -1,102 +1,42 @@
 /* =====================================================================
-   作品データ — ここを編集するだけで作品が増やせます
+   個人開発データ (GitHub) — ここを編集するだけで項目が増やせます
    ---------------------------------------------------------------------
-   1作品 = 下記オブジェクト1つ。WORKS 配列に追加してください。
+   1項目 = 下記オブジェクト1つ。PROJECTS 配列に追加してください。
    フィールド:
-     category : 'video' | 'illust' | 'cg' | 'electronics' | 'music'   （必須・カテゴリ）
-     title    : 作品名（日本語）                       （必須）
-     titleEn  : ローマ字/英語表記（任意・カードに小さく表示）
-     desc     : 1〜2行の説明                          （任意）
-     thumbnail: サムネ画像のパス 例 'assets/img/works/xxx.jpg'（任意・未指定なら制作中ビジュアル）
-     altImage : 電子工作の「裏面/回路図」画像パス（任意・X線トグル用）
-     tools    : 使用ツール・部品の配列 例 ['After Effects','Premiere Pro']（任意）
-     specs    : 尺/解像度などの短いメタ 例 '01:32 / 4K'（任意）
-     year     : 制作年 例 '2026'                        （任意）
-     link     : 外部リンク（YouTube/詳細ページ等）       （任意）
-     wip      : true にすると「制作中 / Coming Soon」表示（任意）
+     name : リポジトリ名/製品名             （必須）
+     desc : 1〜2行の説明                     （必須）
+     tags : タグ配列 例 ['デスクトップアプリ','C#'] （必須・絞り込みに使用）
+     link : GitHubなどのリンク               （任意）
+     meta : ステータス等の短いメタ 例 'Releases公開中' （任意）
+
+   ※ works.html では「検索」＋タグで絞り込めます。
    ===================================================================== */
 
-const WORKS = [
-  // ▼ 代表作は制作中。実際の作品ができたら wip を消して thumbnail 等を入れてください。
+const PROJECTS = [
   {
-    category: 'video',
-    title: '映像作品',
-    titleEn: 'coming soon',
-    desc: '心に残る映像・モーション作品。準備が整い次第ここで公開します。',
-    tools: ['After Effects', 'Premiere Pro'],
-    year: '2026',
-    wip: true,
+    name: 'ClaudeTokenMonitor',
+    desc: '~/.claude/projects のログを解析して、Claude Codeのトークン使用量・コストをリアルタイムに可視化するツール。時系列グラフとGitHub風ヒートマップ付き。',
+    tags: ['デスクトップアプリ', 'C#', 'Swift', 'JavaScript'],
+    link: 'https://github.com/n-ekona/ClaudeTokenMonitor',
+    meta: 'Windows / macOS / Linux・Releases公開中',
   },
   {
-    category: 'illust',
-    title: 'イラスト作品',
-    titleEn: 'coming soon',
-    desc: 'イラスト・グラフィックを準備中です。',
-    tools: ['Photoshop', 'Procreate'],
-    year: '2026',
-    wip: true,
+    name: 'nekonabot',
+    desc: 'ボイスチャンネルのアクティブ時間とメッセージ数を常時記録し、期間指定で帯グラフランキングを画像出力するDiscordボット。ラズベリーパイでの常駐運用を想定。',
+    tags: ['Discordボット', 'JavaScript', 'Node.js'],
+    link: 'https://github.com/n-ekona/KagemuNA-DiscordBOT',
+    meta: 'Raspberry Pi常駐・SQLite使用',
   },
   {
-    category: 'cg',
-    title: '3DCG作品',
-    titleEn: 'coming soon',
-    desc: '3DCG・モデリング作品を予定しています。',
-    tools: ['Blender'],
-    year: '2026',
-    wip: true,
+    name: 'FindSenryu4Discord',
+    desc: 'Discordのメッセージから川柳を検出し、詠まれた句をもとに新しい川柳を生成するボット。',
+    tags: ['Discordボット', 'Go'],
+    link: 'https://github.com/n-ekona/FindSenryu4Discord',
   },
   {
-    category: 'electronics',
-    title: '電子工作',
-    titleEn: 'coming soon',
-    desc: '人を驚かせる電子工作。回路と装置を準備中です。',
-    tools: ['Arduino', 'KiCad'],
-    year: '2026',
-    wip: true,
+    name: 'website',
+    desc: 'このサイト自体。静的HTML/CSS/JavaScriptで構築したポートフォリオ。',
+    tags: ['Webサイト', 'HTML', 'CSS', 'JavaScript'],
+    link: 'https://github.com/n-ekona/website',
   },
-  {
-    category: 'music',
-    title: '楽曲・作曲',
-    titleEn: 'coming soon',
-    desc: 'オリジナル楽曲・劇伴を準備中です。',
-    tools: ['DAW'],
-    year: '2026',
-    wip: true,
-  },
-];
-
-/* カテゴリ定義（ラベル・色・モチーフ）。基本そのままでOK。 */
-const CATEGORIES = {
-  video:       { label: '映像',     color: '#5AA9FF' },
-  illust:      { label: 'イラスト', color: '#4ECCE6' },
-  cg:          { label: '3DCG',     color: '#7E8CF0' },
-  electronics: { label: '電子工作', color: '#9A8BFF' },
-  music:       { label: '作曲',     color: '#5BC8C0' },
-};
-
-/* =====================================================================
-   スキル / 使うもの — 実際に使うツールに合わせて自由に編集してください
-   ===================================================================== */
-const SKILLS = [
-  { name: '映像・編集', color: '#5AA9FF', tools: ['Premiere Pro', 'After Effects', 'DaVinci Resolve'] },
-  { name: 'イラスト',   color: '#4ECCE6', tools: ['Photoshop', 'Procreate', 'Illustrator'] },
-  { name: '3DCG',       color: '#7E8CF0', tools: ['Blender', 'Cinema 4D'] },
-  { name: '電子工作',   color: '#9A8BFF', tools: ['Arduino', 'ESP32', 'KiCad', 'はんだづけ'] },
-  { name: '作曲',       color: '#5BC8C0', tools: ['DAW', 'Studio One'] },
-];
-
-/* =====================================================================
-   ヒーロー背景メディア — トップの「心に残る映像を…」の背景に
-   ぼかし・無音で表示。複数入れると 7秒ごとにランダムで切り替わります。
-   （1件だけのときは切り替えず、その動画をループ再生）
-   ---------------------------------------------------------------------
-     YouTube : { type:'youtube', id:'動画ID', start: 開始秒 }
-     画像     : { type:'image',   src:'assets/img/hero/xxxx.jpg' }
-   ※ 動画IDは URL の v= のあと。例 youtube.com/watch?v=yXCAgFOrLLA → 'yXCAgFOrLLA'
-   ===================================================================== */
-const HERO_MEDIA = [
-  { type: 'youtube', id: 'yXCAgFOrLLA', start: 27 },
-  // ↓ 追加例（コメントを外して使う）。複数あると7秒ごとにランダム切替
-  // { type: 'youtube', id: 'XXXXXXXXXXX', start: 0 },
-  // { type: 'image',   src: 'assets/img/hero/sample.jpg' },
 ];
