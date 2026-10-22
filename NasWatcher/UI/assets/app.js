@@ -626,6 +626,10 @@ async function toggleRelay() {
   try {
     const targetPort = parseInt($('relayTarget').value, 10) || 80;
 
+    if (!relayRunning && targetPort === 445) {
+      el.textContent = 'SMB (445) を確保しています... 管理者権限の確認が表示されたら［はい］を押してください。';
+    }
+
     const data = relayRunning
       ? await call('relayStop')
       : await call('relayStart', { targetPort });
@@ -688,18 +692,24 @@ async function init() {
   bind();
   fillSelect($('webPort'), ['80', '443', '5000', '5001', '8080'].map((v) => ({ value: v, text: v })), '5000');
   fillSelect($('relayTarget'), [
+    { value: '445', text: 'SMB (445) - iPhone の「ファイル」向け' },
     { value: '5005', text: 'WebDAV (5005) - Files アプリ向け' },
     { value: '5006', text: 'WebDAV (5006) - HTTPS' },
     { value: '80', text: 'NAS の Web (80)' },
     { value: '443', text: 'NAS の Web (443)' },
     { value: '5000', text: 'NAS の Web (5000)' },
     { value: '5001', text: 'NAS の Web (5001)' },
-    { value: '445', text: 'SMB (445)' },
-  ], '5005');
+  ], '445');
   await loadAdapters();
   updateSmbPath();
   await loadLanInfo();
   await loadRelayInfo();
+
+  // Chromium のフォーム復元で前回の値が再適用されることがあるため、
+  // 既定値 (SMB 445) を少し遅らせて明示し直す
+  setTimeout(() => {
+    if (!relayRunning) $('relayTarget').value = '445';
+  }, 500);
 }
 
 init();

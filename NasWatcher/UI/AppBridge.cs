@@ -92,21 +92,34 @@ internal sealed class AppBridge : IDisposable
         if (adapter is null) throw new InvalidOperationException("モバイルホットスポットが ON ではありません。");
         if (string.IsNullOrEmpty(nasIp)) throw new InvalidOperationException("NAS が選択されていません。");
 
+        // 既に動いているリレーがあれば止めてから開始する
+        _relay.Stop();
+        _proxy.Stop();
+
         // 待ち受けポートは「転送先と同じポート」を優先し、空いていなければ自動で選ぶ
-        // (iPhone のブラウザはポート指定ができるため、 NAS 側と同一のポートが扱いやすい)
+        // (iPhone のブラウザはポート指定ができるため、NAS 側と同一のポートが扱いやすい)
         var candidates = new List<int> { targetPort };
         candidates.AddRange(new[] { 8080, 9000, 6000, 5050, 7000, 4500, 4440, 4450 });
         candidates = candidates.Distinct().ToList();
 
-        // SMB (445) の場合、Windows 側の SMB サーバーが 445 を使っているため一時停止する
-        if (targetPort == 445 && _lan.IsLocalSmbServerRunning())
+        // SMB (445) は Windows 自身の SMB サーバーが使用しているため、一時停止して空ける
+        if (targetPort == 445)
         {
-            var (stopped, message) = _lan.StopLocalSmbServer();
-            if (stopped)
+            if (!_lan.IsSmbPortAvailable())
             {
+                var (stopped, message) = _lan.StopLocalSmbServer();
+                if (!stopped)
+                {
+                    throw new InvalidOperationException(
+                        "SMB (445) の待受ポートを確保できませんでした。" + message);
+                }
+
                 _smbServerStopped = true;
-                AppLog.Info($"リレーのため Windows の SMB サーバーを一時停止しました: {message}");
+                AppLog.Info("リレーのため Windows の SMB サーバーを一時停止しました。");
             }
+
+            // iPhone の「ファイル」アプリは SMB のポートが 445 固定のため、SMB だけは別ポートに逃げない
+            candidates = new List<int> { 445 };
         }
 
         string? lastError = null;
@@ -118,12 +131,10 @@ internal sealed class AppBridge : IDisposable
             {
                 if (IsHttpTarget(targetPort))
                 {
-                    _relay.Stop();
                     _proxy.Start(adapter.Address.ToString(), port, nasIp, targetPort);
                 }
                 else
                 {
-                    _proxy.Stop();
                     _relay.Start(adapter.Address.ToString(), port, nasIp, targetPort);
                 }
 
@@ -140,19 +151,22 @@ internal sealed class AppBridge : IDisposable
 
         if (!started)
         {
-            throw new InvalidOperationException($"リレーの待受ポートを確保できませんでした: {lastError}");
+            // 445 を空けるために止めた SMB サーバーを元に戻す
+            if (_smbServerStopped)
+            {
+                _smbServerStopped = false;
+                _lan.StartLocalSmbServer();
+            }
+
+            throw new InvalidOperationException(
+                targetPort == 445
+                    ? $"SMB (445) の待受を開始できませんでした: {lastError}"
+                    : $"リレーの待受ポートを確保できませんでした: {lastError}");
         }
 
         if (!_lan.IsLanAccessEnabled())
         {
             info["hint"] = "iPhone からの接続をブロックしている可能性があります。［LAN アクセスを許可］を押してファイアウォール ルールを追加してください (管理者権限が必要です)。";
-        }
-
-        if (targetPort == 445 && info["port"]?.GetValue<int>() != 445)
-        {
-            info["hint"] = (info["hint"]?.GetValue<string>() ?? "")
-                + " ※ iPhone の Files アプリは SMB のポートが 445 固定のため、"
-                + "445 を使わない場合は WebDAV (5005) をご利用ください。";
         }
 
         return info;
@@ -202,9 +216,11 @@ internal sealed class AppBridge : IDisposable
                 ? $"http://{adapter.Address}:{port}"
                 : null,
             ["smbTarget"] = running && adapter is not null && nasIp is not null
-                ? $"smb://{adapter.Address}:{port}"
+                ? (port == 445 ? $"smb://{adapter.Address}" : $"smb://{adapter.Address}:{port}")
                 : null,
-            ["hint"] = null,
+            ["hint"] = _smbServerStopped
+                ? "Windows の SMB サーバーを一時停止して 445 番を確保しました (リレー停止時に自動で元に戻します)。"
+                : null,
         };
     }
 
@@ -692,6 +708,14 @@ internal sealed class AppBridge : IDisposable
     public void Dispose()
     {
         _scanCts?.Cancel();
+
+        // リレーのために停止していた Windows の SMB サーバーを戻す
+        if (_smbServerStopped)
+        {
+            _smbServerStopped = false;
+            _lan.StartLocalSmbServer();
+        }
+
         _hotspotTimer.Dispose();
         _speed.Dispose();
         _relay.Dispose();

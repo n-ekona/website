@@ -114,6 +114,8 @@ public sealed class TcpRelay : IDisposable
             }
             catch (Exception ex)
             {
+                if (token.IsCancellationRequested) break;
+
                 lock (_lock) _lastError = ex.Message;
                 AppLog.Warn("TCP リレーの接続受付に失敗しました。", ex);
                 await Task.Delay(500).ConfigureAwait(false);
@@ -154,6 +156,20 @@ public sealed class TcpRelay : IDisposable
             var toClient = upstreamStream.CopyToAsync(clientStream, 64 * 1024, token);
 
             await Task.WhenAny(toUpstream, toClient).ConfigureAwait(false);
+
+            // 片方向が終わったら両側を閉じ、残ったコピーも確実に完了させる
+            // (放置すると未監視のタスク例外になる)
+            try { client.Client.Shutdown(SocketShutdown.Both); } catch { /* 既に切断済み */ }
+            try { upstream.Client.Shutdown(SocketShutdown.Both); } catch { /* 既に切断済み */ }
+
+            try
+            {
+                await Task.WhenAll(toUpstream, toClient).ConfigureAwait(false);
+            }
+            catch (Exception)
+            {
+                // どちらかの切断によるもの (正常な終了)
+            }
         }
         catch (Exception ex)
         {

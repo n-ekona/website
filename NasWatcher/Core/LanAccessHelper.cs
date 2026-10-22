@@ -2,6 +2,7 @@ using System.Diagnostics;
 using System.Net;
 using System.Net.NetworkInformation;
 using System.Net.Sockets;
+using System.Text;
 
 namespace NasWatcher.Core;
 
@@ -189,17 +190,35 @@ Write-Output 'OK'
         }
     }
 
-    /// <summary>ローカル PC の SMB サーバー (LanmanServer) を停止します (445 番を空けるため)。</summary>
+    /// <summary>ローカル PC の SMB サーバーを停止し、445 番を空けます。</summary>
+    /// <remarks>
+    /// LanmanServer を止めるだけではカーネル ドライバー (srv2 / srvnet) が 445 を保持したままなので、
+    /// ドライバーも停止してソケットを解放します。
+    /// </remarks>
     public (bool Success, string Message) StopLocalSmbServer()
     {
         var script = @"
 $ErrorActionPreference = 'SilentlyContinue'
 Stop-Service -Name LanmanServer -Force
-Start-Sleep -Milliseconds 500
+Start-Sleep -Milliseconds 600
+sc.exe stop srv2 | Out-Null
+Start-Sleep -Milliseconds 900
+sc.exe stop srvnet | Out-Null
+Start-Sleep -Milliseconds 900
 Write-Output 'STOPPED'
 ";
 
-        return RunElevated(script);
+        var (ok, message) = RunElevated(script);
+        if (!ok) return (false, message);
+
+        // 実際に 445 が空くまで待つ (ドライバーの解放に数秒かかることがある)
+        for (var i = 0; i < 24; i++)
+        {
+            if (IsSmbPortAvailable()) return (true, "Windows の SMB サーバーを一時停止しました。");
+            Thread.Sleep(250);
+        }
+
+        return (false, "Windows の SMB サーバーは停止しましたが、445 番がまだ使用中です (再起動すると確実に空きます)。");
     }
 
     /// <summary>ローカル PC の SMB サーバーを再起動します。</summary>
@@ -207,11 +226,31 @@ Write-Output 'STOPPED'
     {
         var script = @"
 $ErrorActionPreference = 'SilentlyContinue'
+sc.exe start srvnet | Out-Null
+Start-Sleep -Milliseconds 500
+sc.exe start srv2 | Out-Null
+Start-Sleep -Milliseconds 500
 Start-Service -Name LanmanServer
 Write-Output 'STARTED'
 ";
 
         return RunElevated(script);
+    }
+
+    /// <summary>445 番を今すぐ待ち受けできるかどうか。</summary>
+    public bool IsSmbPortAvailable()
+    {
+        try
+        {
+            var listener = new TcpListener(IPAddress.Any, 445);
+            listener.Start();
+            listener.Stop();
+            return true;
+        }
+        catch
+        {
+            return false;
+        }
     }
 
     /// <summary>ローカル PC の SMB サーバーが動作中かどうか。</summary>
@@ -242,8 +281,10 @@ Write-Output 'STARTED'
     {
         try
         {
+            // -Command だと改行や引用符の解釈が不安定なので、UTF-16LE の Base64 で渡す
+            var encoded = Convert.ToBase64String(Encoding.Unicode.GetBytes(script));
             var psi = new ProcessStartInfo("powershell.exe",
-                $"-NoProfile -ExecutionPolicy Bypass -Command \"{script.Replace("\"", "\\\"")}\"")
+                $"-NoProfile -ExecutionPolicy Bypass -EncodedCommand {encoded}")
             {
                 Verb = "runas",
                 UseShellExecute = true,

@@ -64,6 +64,17 @@ public sealed class MainForm : Form
             _core.Settings.IsZoomControlEnabled = false;
             _core.Settings.IsWebMessageEnabled = true;
 
+            // 前回のフォーム値 (select) が勝手に復元されて既定値が変わらないようにする
+            try
+            {
+                _core.Settings.IsGeneralAutofillEnabled = false;
+                _core.Settings.IsPasswordAutosaveEnabled = false;
+            }
+            catch (Exception ex)
+            {
+                AppLog.Warn("自動入力の無効化に失敗しました。", ex);
+            }
+
             _bridge = new AppBridge();
             _bridge.Push += OnBridgePush;
 
