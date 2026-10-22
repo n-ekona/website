@@ -189,6 +189,55 @@ Write-Output 'OK'
         }
     }
 
+    /// <summary>ローカル PC の SMB サーバー (LanmanServer) を停止します (445 番を空けるため)。</summary>
+    public (bool Success, string Message) StopLocalSmbServer()
+    {
+        var script = @"
+$ErrorActionPreference = 'SilentlyContinue'
+Stop-Service -Name LanmanServer -Force
+Start-Sleep -Milliseconds 500
+Write-Output 'STOPPED'
+";
+
+        return RunElevated(script);
+    }
+
+    /// <summary>ローカル PC の SMB サーバーを再起動します。</summary>
+    public (bool Success, string Message) StartLocalSmbServer()
+    {
+        var script = @"
+$ErrorActionPreference = 'SilentlyContinue'
+Start-Service -Name LanmanServer
+Write-Output 'STARTED'
+";
+
+        return RunElevated(script);
+    }
+
+    /// <summary>ローカル PC の SMB サーバーが動作中かどうか。</summary>
+    public bool IsLocalSmbServerRunning()
+    {
+        try
+        {
+            using var process = Process.Start(new ProcessStartInfo("powershell.exe",
+                "-NoProfile -Command \"(Get-Service LanmanServer).Status.ToString()\"")
+            {
+                UseShellExecute = false,
+                CreateNoWindow = true,
+                RedirectStandardOutput = true,
+            });
+
+            if (process is null) return false;
+            var output = process.StandardOutput.ReadToEnd();
+            process.WaitForExit(8000);
+            return output.Contains("Running", StringComparison.OrdinalIgnoreCase);
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
     private static (bool, string) RunElevated(string script)
     {
         try

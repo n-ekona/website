@@ -136,7 +136,8 @@
 
       <div class="relay-box">
         <div class="lan-head">リレー (NAS がリンクローカル 169.254.x.x の場合に)</div>
-        <div class="muted relay-note">NAS がインターネット経由の返信経路を持たない場合、iPhone から直接では接続できません。PC が中継 (リレー) すると、モバイル端末から NAS の Web 管理画面・SMB へアクセスできます。</div>
+        <div class="muted relay-note">NAS がインターネット経由の返信経路を持たない場合、iPhone から直接では接続できません。PC が中継 (リレー) すると、モバイル端末から NAS の Web 管理画面・SMB・WebDAV へアクセスできます。<br>
+          <b>iPhone の「ファイル」アプリ</b> からの接続: <b>WebDAV</b> なら「接続先&nbsp;サーバーに&nbsp;追加」→ <code id="relayUrlHint">http://192.168.137.1</code> を入力します (SMB は 445 番固定のため NAS 側で WebDAV を有効にしてください)。</div>
         <div class="kv"><span>iPhone での URL</span><span class="kv-value"><b id="relayUrl" class="mono-text">—</b><button class="icon-toggle" id="copyRelayUrl" title="URL をコピー" aria-label="URL をコピー"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="9" width="12" height="12" rx="2"></rect><path d="M5 15H4a2 2 0 0 1-2-2V4a2 2 0 0 1 2-2h9a2 2 0 0 1 2 2v1"></path></svg></button></span></div>
         <div class="lan-actions">
           <button class="btn ghost" id="relayToggle">リレーを開始</button>

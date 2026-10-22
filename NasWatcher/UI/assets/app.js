@@ -590,12 +590,20 @@ async function toggleLan() {
 
 let relayRunning = false;
 
+function relayUrl(data) {
+  if (!data) return '—';
+  if (data.targetPort === 445) return data.smbTarget || data.url || '—';
+  return data.url || '—';
+}
+
 async function loadRelayInfo() {
   try {
     const data = await call('relayStatus');
     relayRunning = data.running === true;
     $('relayToggle').textContent = relayRunning ? 'リレーを停止' : 'リレーを開始';
-    $('relayUrl').textContent = data.url || '—';
+    const url = relayUrl(data);
+    $('relayUrl').textContent = url;
+    $('relayUrlHint').textContent = url;
 
     const el = $('relayResult');
     if (relayRunning) {
@@ -624,7 +632,8 @@ async function toggleRelay() {
 
     relayRunning = data.running === true;
     $('relayToggle').textContent = relayRunning ? 'リレーを停止' : 'リレーを開始';
-    $('relayUrl').textContent = data.url || '—';
+    $('relayUrl').textContent = relayUrl(data);
+    $('relayUrlHint').textContent = relayUrl(data);
     el.className = 'muted ' + (relayRunning ? 'ok' : '');
     el.textContent = relayRunning
       ? `中継を開始しました (待受ポート ${data.port} → NAS ${data.nasIp}:${data.targetPort})。` + (data.hint ? ' ' + data.hint : '')
@@ -679,12 +688,14 @@ async function init() {
   bind();
   fillSelect($('webPort'), ['80', '443', '5000', '5001', '8080'].map((v) => ({ value: v, text: v })), '5000');
   fillSelect($('relayTarget'), [
+    { value: '5005', text: 'WebDAV (5005) - Files アプリ向け' },
+    { value: '5006', text: 'WebDAV (5006) - HTTPS' },
     { value: '80', text: 'NAS の Web (80)' },
     { value: '443', text: 'NAS の Web (443)' },
     { value: '5000', text: 'NAS の Web (5000)' },
     { value: '5001', text: 'NAS の Web (5001)' },
     { value: '445', text: 'SMB (445)' },
-  ], '80');
+  ], '5005');
   await loadAdapters();
   updateSmbPath();
   await loadLanInfo();

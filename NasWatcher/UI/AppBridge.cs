@@ -98,6 +98,17 @@ internal sealed class AppBridge : IDisposable
         candidates.AddRange(new[] { 8080, 9000, 6000, 5050, 7000, 4500, 4440, 4450 });
         candidates = candidates.Distinct().ToList();
 
+        // SMB (445) の場合、Windows 側の SMB サーバーが 445 を使っているため一時停止する
+        if (targetPort == 445 && _lan.IsLocalSmbServerRunning())
+        {
+            var (stopped, message) = _lan.StopLocalSmbServer();
+            if (stopped)
+            {
+                _smbServerStopped = true;
+                AppLog.Info($"リレーのため Windows の SMB サーバーを一時停止しました: {message}");
+            }
+        }
+
         string? lastError = null;
         var started = false;
 
@@ -105,7 +116,7 @@ internal sealed class AppBridge : IDisposable
         {
             try
             {
-                if (targetPort is 80 or 5000 or 5001)
+                if (IsHttpTarget(targetPort))
                 {
                     _relay.Stop();
                     _proxy.Start(adapter.Address.ToString(), port, nasIp, targetPort);
@@ -137,13 +148,33 @@ internal sealed class AppBridge : IDisposable
             info["hint"] = "iPhone からの接続をブロックしている可能性があります。［LAN アクセスを許可］を押してファイアウォール ルールを追加してください (管理者権限が必要です)。";
         }
 
+        if (targetPort == 445 && info["port"]?.GetValue<int>() != 445)
+        {
+            info["hint"] = (info["hint"]?.GetValue<string>() ?? "")
+                + " ※ iPhone の Files アプリは SMB のポートが 445 固定のため、"
+                + "445 を使わない場合は WebDAV (5005) をご利用ください。";
+        }
+
         return info;
     }
+
+    /// <summary>HTTP として中継する対象ポートかどうか。</summary>
+    private static bool IsHttpTarget(int port) => port is 80 or 443 or 5000 or 5001 or 5005 or 5006;
+
+    private bool _smbServerStopped;
 
     private JsonNode StopRelay()
     {
         _relay.Stop();
         _proxy.Stop();
+
+        // リレーのために停止していた Windows の SMB サーバーを戻す
+        if (_smbServerStopped)
+        {
+            _smbServerStopped = false;
+            _lan.StartLocalSmbServer();
+        }
+
         return BuildRelayInfo();
     }
 
@@ -366,7 +397,7 @@ internal sealed class AppBridge : IDisposable
         return null;
     }
 
-    /// <summary>NAS の Web アクセスに使うポート (検出し���た値があればそれを優先)。</summary>
+    /// <summary>NAS の Web アクセスに使うポート (検出した値があればそれを優先)。</summary>
     private int WebPort => _detectedWebPort ?? _settings.WebPort;
 
     /// <summary>ポートが省略できる既定ポートかどうか。</summary>
